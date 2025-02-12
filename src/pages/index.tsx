@@ -155,20 +155,6 @@ export default function Home() {
 
           <div className="mx-auto max-w-5xl">
             <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
-              {/* {[...Array(4)].map((_, index) => (
-                <div
-                  key={index}
-                  className="flex items-center justify-center p-8 rounded-2xl bg-muted/30 backdrop-blur-sm border border-muted/20"
-                >
-                  <Image
-                    src="/placeholder-logo.svg"
-                    alt={`Partner logo ${index + 1}`}
-                    width={160}
-                    height={80}
-                    className="max-h-12 object-contain opacity-50 hover:opacity-100 transition-all"
-                  />
-                </div>
-              ))} */}
             </div>
           </div>
         </div>
