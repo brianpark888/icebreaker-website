@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from "react"
-import { Users, Trophy, Activity, Settings, LogOut, Home, Calendar } from 'lucide-react'
+import { Users, Trophy, Activity, Settings, Home, Calendar } from 'lucide-react'
 import Link from "next/link"
 import Image from "next/image"
 
