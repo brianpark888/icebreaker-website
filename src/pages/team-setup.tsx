@@ -2,9 +2,8 @@
 
 import { useState } from "react"
 import { Users, ArrowRight, Plus, UserPlus } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function TeamSetup() {
@@ -51,29 +50,28 @@ export default function TeamSetup() {
           <CardContent>
             <form onSubmit={handleCreateTeam} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="teamName">Team Name</Label>
+                <label htmlFor="teamName">Team Name</label>
                 <Input id="teamName" placeholder="Enter team name" required className="bg-background/50" />
               </div>
-              <Button
+              <button
                 type="submit"
                 className="w-full bg-gradient-to-r from-blue-500 to-violet-500 hover:from-blue-600 hover:to-violet-600"
               >
                 Create Team
                 <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
+              </button>
 
               {inviteLink && (
                 <div className="mt-4 p-4 rounded-lg bg-muted/30 border border-muted">
-                  <Label className="text-sm text-muted-foreground">Share this code with your team</Label>
+                  <label className="text-sm text-muted-foreground">Share this code with your team</label>
                   <div className="flex gap-2 mt-2">
                     <Input value={inviteLink} readOnly className="bg-background/50" />
-                    <Button
-                      variant="outline"
+                    <button
                       onClick={() => navigator.clipboard.writeText(inviteLink)}
                       className="shrink-0"
                     >
                       Copy
-                    </Button>
+                    </button>
                   </div>
                 </div>
               )}
@@ -93,13 +91,13 @@ export default function TeamSetup() {
           <CardContent>
             <form onSubmit={handleJoinTeam} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="inviteCode">Invite Code</Label>
+                <label htmlFor="inviteCode">Invite Code</label>
                 <Input id="inviteCode" placeholder="Enter invite code" required className="bg-background/50" />
               </div>
-              <Button type="submit" variant="outline" className="w-full">
+              <button type="submit" className="w-full">
                 Join Team
                 <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
+              </button>
             </form>
           </CardContent>
         </Card>
