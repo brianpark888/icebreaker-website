@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 224 71% 4%;
+    --foreground: 213 31% 91%;
+
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 280 65% 60%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --accent: 316 70% 43%;
+    --accent-foreground: 210 40% 98%;
+
+    --card: 224 71% 4%;
+    --card-foreground: 213 31% 91%;
+
+    --popover: 224 71% 4%;
+    --popover-foreground: 215 20.2% 65.1%;
+
+    --muted: 215 27.9% 16.9%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --border: 216 34% 17%;
+    --input: 216 34% 17%;
+    --ring: 216 34% 17%;
+
+    --radius: 0.5rem;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-violet-500;
+  }
+
+  .bg-grid {
+    background-image: linear-gradient(to right, #1a1a1a 1px, transparent 1px),
+      linear-gradient(to bottom, #1a1a1a 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  .glow-border {
+    box-shadow: 0 0 20px rgba(82, 109, 255, 0.15);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Add specific canvas styles */
+canvas {
+  touch-action: none;
+}
+
+/* Ensure the canvas container takes full height */
+#canvas-container {
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
