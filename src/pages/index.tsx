@@ -61,13 +61,15 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground overflow-hidden">
       {/* Hero Section */}
+      
+      <div className="flex h-16 items-center gap-2 px-6 border-b border-muted/20 absolute inline-flex rounded-fully px-3 py-1 text-sm font-semibold leading-6">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-violet-500" />
+              <span className="font-semibold">Icebreakers</span>
+            </div>
       <header className="relative min-h-screen flex items-center justify-center overflow-hidden">
         <HeroScene />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-32">
           <div className="relative z-10 mx-auto max-w-3xl text-center">
-            <div className="mb-8 inline-flex rounded-full bg-muted px-3 py-1 text-sm font-semibold leading-6">
-              Launching Soon 🚀
-            </div>
             <h1 className="text-4xl font-bold tracking-tight sm:text-6xl md:text-7xl mb-8 text-gradient">
               The Best Way for Remote Teams to Connect, Bond, and Onboard.
             </h1>
