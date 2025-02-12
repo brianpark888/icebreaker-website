@@ -98,7 +98,7 @@ export default function Home() {
 
           <div className="mx-auto max-w-7xl">
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-              {features.map((feature, index) => (
+              {/* {features.map((feature, index) => (
                 <div
                   key={index}
                   className="relative p-8 rounded-2xl bg-gradient-to-b from-muted/50 to-muted/30 backdrop-blur-sm border border-muted/20 hover:border-primary/50 transition-all duration-300 glow-border"
@@ -111,7 +111,7 @@ export default function Home() {
                   <h3 className="mt-8 text-xl font-semibold">{feature.title}</h3>
                   <p className="mt-4 text-muted-foreground">{feature.description}</p>
                 </div>
-              ))}
+              ))} */}
             </div>
           </div>
         </div>
@@ -127,7 +127,7 @@ export default function Home() {
 
           <div className="mx-auto max-w-5xl">
             <div className="grid grid-cols-1 gap-12 sm:grid-cols-3">
-              {steps.map((step, index) => (
+              {/* {steps.map((step, index) => (
                 <div key={index} className="relative">
                   <div className="flex flex-col items-center text-center">
                     <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-r from-blue-500 to-violet-500 animate-pulse-slow">
@@ -137,7 +137,7 @@ export default function Home() {
                     <p className="mt-4 text-muted-foreground">{step.description}</p>
                   </div>
                 </div>
-              ))}
+              ))} */}
             </div>
           </div>
         </div>
@@ -155,7 +155,7 @@ export default function Home() {
 
           <div className="mx-auto max-w-5xl">
             <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
-              {[...Array(4)].map((_, index) => (
+              {/* {[...Array(4)].map((_, index) => (
                 <div
                   key={index}
                   className="flex items-center justify-center p-8 rounded-2xl bg-muted/30 backdrop-blur-sm border border-muted/20"
@@ -168,7 +168,7 @@ export default function Home() {
                     className="max-h-12 object-contain opacity-50 hover:opacity-100 transition-all"
                   />
                 </div>
-              ))}
+              ))} */}
             </div>
           </div>
         </div>
