@@ -1,6 +1,6 @@
 import { Users, Gamepad2, Rocket, Globe2 } from "lucide-react"
 import Link from "next/link"
-import Image from "next/image"
+// import Image from "next/image"
 import dynamic from "next/dynamic"
 
 // Dynamically import HeroScene to avoid SSR issues
@@ -17,44 +17,44 @@ type Feature = {
 
 
 export default function Home() {
-  const features: Feature[] = [
-    {
-      title: "Icebreakers That Actually Work",
-      description: "Get new remote teams talking in minutes.",
-      icon: <Users className="h-6 w-6 text-white" />,
-    },
-    {
-      title: "Team Building Made Fun",
-      description: "Strengthen collaboration and friendships naturally.",
-      icon: <Gamepad2 className="h-6 w-6 text-white" />,
-    },
-    {
-      title: "Seamless Onboarding",
-      description: "Help new hires feel like part of the team from day one.",
-      icon: <Rocket className="h-6 w-6 text-white" />,
-    },
-    {
-      title: "No Installations, No Hassle",
-      description: "Just open the link and play in your browser.",
-      icon: <Globe2 className="h-6 w-6 text-white" />,
-    },
-  ];
+  // const features: Feature[] = [
+  //   {
+  //     title: "Icebreakers That Actually Work",
+  //     description: "Get new remote teams talking in minutes.",
+  //     icon: <Users className="h-6 w-6 text-white" />,
+  //   },
+  //   {
+  //     title: "Team Building Made Fun",
+  //     description: "Strengthen collaboration and friendships naturally.",
+  //     icon: <Gamepad2 className="h-6 w-6 text-white" />,
+  //   },
+  //   {
+  //     title: "Seamless Onboarding",
+  //     description: "Help new hires feel like part of the team from day one.",
+  //     icon: <Rocket className="h-6 w-6 text-white" />,
+  //   },
+  //   {
+  //     title: "No Installations, No Hassle",
+  //     description: "Just open the link and play in your browser.",
+  //     icon: <Globe2 className="h-6 w-6 text-white" />,
+  //   },
+  // ];
 
 
-  const steps = [
-    {
-      title: "Sign In",
-      description: "Create an account and access the dashboard.",
-    },
-    {
-      title: "Choose a Game",
-      description: "Pick from fun, interactive team-building activities.",
-    },
-    {
-      title: "Invite Your Team",
-      description: "Send a link and start playing instantly.",
-    },
-  ];
+  // const steps = [
+  //   {
+  //     title: "Sign In",
+  //     description: "Create an account and access the dashboard.",
+  //   },
+  //   {
+  //     title: "Choose a Game",
+  //     description: "Pick from fun, interactive team-building activities.",
+  //   },
+  //   {
+  //     title: "Invite Your Team",
+  //     description: "Send a link and start playing instantly.",
+  //   },
+  // ];
 
 
 
