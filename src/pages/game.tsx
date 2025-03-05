@@ -2,6 +2,8 @@
 
 import Link from "next/link"
 import { Suspense } from "react"
+import BackButton from "@/components/ui/BackButton"
+
 
 // Dynamically import the game component to avoid SSR issues
 // const GameCanvas = dynamic(() => import("@/components/game-canvas"), {
@@ -11,20 +13,11 @@ import { Suspense } from "react"
 
 export default function GamePage() {
   return (
-    <div className="min-h-screen bg-gray-900 text-white relative overflow-hidden flex flex-col">
-      {/* Background Grid */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle,_rgba(255,255,255,0.05)_1px,_transparent_1px)] bg-[size:20px_20px] opacity-10" />
-
+    <div className="min-h-screen bg-gray-900 text-white relative flex flex-col">
+      
       {/* Navigation */}
       <nav className="p-4">
-        <div className="max-w-7xl mx-auto">
-          <Link href="/dashboard" className="flex items-center gap-2 text-gray-300 hover:text-white transition">
-            <svg className="w-5 h-5 transition-transform hover:-translate-x-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7"></path>
-            </svg>
-            Back to Dashboard
-          </Link>
-        </div>
+        <BackButton path="/dashboard" displayString="Dashboard" />
       </nav>
 
       {/* Main Game Container */}

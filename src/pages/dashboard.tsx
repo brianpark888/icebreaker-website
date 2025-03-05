@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Users, Trophy, Activity, Settings, Home, Calendar } from 'lucide-react'
 import Link from "next/link"
 import Image from "next/image"
+import Button from "@/components/ui/Button"
 
 export default function Dashboard() {
   const [activePage, setActivePage] = useState("dashboard")
@@ -41,10 +42,12 @@ export default function Dashboard() {
           <div className="grid gap-6">
             {/* Header */}
             <div className="flex items-center justify-between">
-              <h1 className="text-3xl font-bold text-gradient">Team Dashboard</h1>
-              <button className="px-4 py-2 rounded bg-gradient-to-r from-blue-500 to-violet-500 hover:from-blue-600 hover:to-violet-600">
-                Start New Game
-              </button>
+              <h1 className="text-3xl font-bold text-gradient">Team Dashboard for Icebreakers</h1>
+              <Link href="/game">
+                <Button>
+                  Join Game
+                </Button>
+              </Link>
             </div>
 
             {/* Stats Grid */}
@@ -69,7 +72,8 @@ export default function Dashboard() {
 
             {/* Leaderboard */}
             <div className="grid gap-6 lg:grid-cols-2">
-              <div className="p-6 rounded-2xl bg-gradient-to-b from-muted/50 to-muted/30 backdrop-blur-sm border border-muted/20">
+              {/* Left Panel */}
+              {/* <div className="p-6 rounded-2xl bg-gradient-to-b from-muted/50 to-muted/30 backdrop-blur-sm border border-muted/20">
                 <h2 className="text-xl font-semibold mb-4">Team Leaderboard</h2>
                 <div className="space-y-4">
                   {leaderboard.map((member, index) => (
@@ -97,28 +101,28 @@ export default function Dashboard() {
                     </div>
                   ))}
                 </div>
-              </div>
+              </div> */}
 
-              {/* Recent Activity */}
-              <div className="p-6 rounded-2xl bg-gradient-to-b from-muted/50 to-muted/30 backdrop-blur-sm border border-muted/20">
-                <h2 className="text-xl font-semibold mb-4">Recent Activity</h2>
-                <div className="space-y-4">
-                  {activities.map((activity, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center gap-4 p-4 rounded-lg bg-muted/30"
-                    >
-                      <div className="p-2 rounded-lg bg-gradient-to-r from-blue-500 to-violet-500">
-                        {activity.icon}
+              {/* Recent Activity- Right Panel */}
+                {/* <div className="p-6 rounded-2xl bg-gradient-to-b from-muted/50 to-muted/30 backdrop-blur-sm border border-muted/20">
+                  <h2 className="text-xl font-semibold mb-4">Recent Activity</h2>
+                  <div className="space-y-4">
+                    {activities.map((activity, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center gap-4 p-4 rounded-lg bg-muted/30"
+                      >
+                        <div className="p-2 rounded-lg bg-gradient-to-r from-blue-500 to-violet-500">
+                          {activity.icon}
+                        </div>
+                        <div className="flex-1">
+                          <p className="font-medium">{activity.title}</p>
+                          <p className="text-sm text-muted-foreground">{activity.time}</p>
+                        </div>
                       </div>
-                      <div className="flex-1">
-                        <p className="font-medium">{activity.title}</p>
-                        <p className="text-sm text-muted-foreground">{activity.time}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+                    ))}
+                  </div>
+                </div> */}
             </div>
           </div>
         </div>

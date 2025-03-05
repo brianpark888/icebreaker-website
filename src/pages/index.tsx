@@ -2,6 +2,7 @@ import { Users, Gamepad2, Rocket, Globe2 } from "lucide-react"
 import Link from "next/link"
 // import Image from "next/image"
 import dynamic from "next/dynamic"
+import Button from "@/components/ui/Button";
 
 // Dynamically import HeroScene to avoid SSR issues
 const HeroScene = dynamic(() => import("@/components/hero-scene"), {
@@ -79,11 +80,9 @@ export default function Home() {
             </p>
             <div className="mt-10">
               <Link href="/login">
-                <button
-                  className="text-lg px-4 py-2 rounded bg-gradient-to-r from-blue-500 to-violet-500 hover:from-blue-600 hover:to-violet-600 animate-glow"
-                >
+                <Button>
                   Get Started
-                </button>
+                </Button>
               </Link>
             </div>
           </div>
@@ -172,11 +171,9 @@ export default function Home() {
             </h2>
             <div className="mt-10">
               <Link href="/login">
-                <button
-                  className="text-lg px-4 py-2 rounded bg-gradient-to-r from-blue-500 to-violet-500 hover:from-blue-600 hover:to-violet-600 animate-glow"
-                >
+                <Button>
                   Sign Up & Get Started
-                </button>
+                </Button>
               </Link>
             </div>
           </div>

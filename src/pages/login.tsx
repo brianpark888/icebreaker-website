@@ -3,6 +3,8 @@
 import { useState } from "react"
 import Link from "next/link"
 import { ArrowLeft } from 'lucide-react'
+import Button from "@/components/ui/Button"
+import BackButton from "@/components/ui/BackButton"
 
 export default function Login() {
   const [isLoading, setIsLoading] = useState(false)
@@ -18,17 +20,10 @@ export default function Login() {
   }
 
   return (
-    <div className="flex min-h-screen bg-background text-foreground overflow-hidden relative">
-      <div className="absolute inset-0 bg-grid opacity-[0.02]" />
+    <div className="flex min-h-screen bg-background text-foreground relative">
       
       {/* Back Button */}
-      <Link 
-        href="/" 
-        className="absolute top-8 left-8 inline-flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors"
-      >
-        <ArrowLeft className="mr-2 h-4 w-4" />
-        Back to Home
-      </Link>
+      <BackButton path="/" displayString="Home" />
 
       <div className="relative flex flex-col items-center justify-center flex-1 w-full px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-sm space-y-8">
@@ -95,13 +90,13 @@ export default function Login() {
                   </div>
                 </div>
 
-                <button
+                <Button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full text-lg px-4 py-2 rounded bg-gradient-to-r from-blue-500 to-violet-500 hover:from-blue-600 hover:to-violet-600 animate-glow disabled:opacity-50 disabled:cursor-not-allowed transition-opacity"
+                  className="w-full rounded-full"
                 >
                   {isLoading ? "Signing in..." : "Sign in"}
-                </button>
+                </Button>
               </form>
             </div>
           </div>

@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { Users, ArrowRight, Plus, UserPlus } from "lucide-react"
+import Button from "@/components/ui/Button"
 
 export default function TeamSetup() {
   const [inviteLink, setInviteLink] = useState("")
@@ -37,15 +38,15 @@ export default function TeamSetup() {
               <label htmlFor="teamName" className="block text-sm font-medium">Team Name</label>
               <input id="teamName" placeholder="Enter team name" required className="w-full p-2 border rounded bg-background" />
             </div>
-            <button type="submit" className="w-full p-2 rounded text-white font-medium bg-gradient-to-r from-blue-500 to-violet-500 hover:from-blue-600 hover:to-violet-600 flex items-center justify-center gap-2">
+            <Button type="submit">
               Create Team <ArrowRight className="w-4 h-4" />
-            </button>
+            </Button>
             {inviteLink && (
               <div className="mt-4 p-4 rounded-lg bg-muted/30 border border-muted">
                 <label className="text-sm text-muted-foreground">Share this code with your team</label>
                 <div className="flex gap-2 mt-2">
                   <input value={inviteLink} readOnly className="flex-1 p-2 border rounded bg-background" />
-                  <button onClick={() => navigator.clipboard.writeText(inviteLink)} className="px-3 py-1 bg-gray-200 rounded">Copy</button>
+                  <Button onClick={() => navigator.clipboard.writeText(inviteLink)} className="px-3 py-1 bg-gray-200 rounded">Copy</Button>
                 </div>
               </div>
             )}
@@ -63,9 +64,9 @@ export default function TeamSetup() {
               <label htmlFor="inviteCode" className="block text-sm font-medium">Invite Code</label>
               <input id="inviteCode" placeholder="Enter invite code" required className="w-full p-2 border rounded bg-background" />
             </div>
-            <button type="submit" className="w-full p-2 rounded text-white font-medium bg-gradient-to-r from-blue-500 to-violet-500 hover:from-blue-600 hover:to-violet-600 flex items-center justify-center gap-2">
+            <Button type="submit">
               Join Team <ArrowRight className="w-4 h-4" />
-            </button>
+            </Button>
           </form>
         </div>
       </div>
