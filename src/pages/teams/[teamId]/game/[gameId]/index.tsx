@@ -1,6 +1,4 @@
 'use client'
-import BackButton from "@/components/ui/BackButton"
-
 
 // Dynamically import the game component to avoid SSR issues
 // const GameCanvas = dynamic(() => import("@/components/game-canvas"), {

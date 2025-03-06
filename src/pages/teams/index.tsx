@@ -7,7 +7,6 @@ import Button from "@/components/ui/Button"
 import Image from "next/image"
 
 export default function TeamsPage() {
-  const [activeTeam, setActiveTeam] = useState<string | null>(null)
 
   return (
     <div className="flex h-screen bg-background">
@@ -37,7 +36,6 @@ export default function TeamsPage() {
                   href={`/teams/${team.id}`} 
                   key={team.id}
                   className="block transition-transform hover:scale-[1.02]"
-                  onClick={() => setActiveTeam(String(team.id))}
                 >
                   <div className="h-full p-6 rounded-2xl bg-gradient-to-b from-muted/50 to-muted/30 backdrop-blur-sm border border-muted/20">
                     <div className="flex items-center gap-4 mb-4">

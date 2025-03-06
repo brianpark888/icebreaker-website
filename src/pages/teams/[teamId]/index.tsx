@@ -20,10 +20,7 @@ import { useParams, useRouter } from "next/navigation"
 export default function TeamPage() {
   const params = useParams()
   const router = useRouter()
-  const teamId = params.teamId as string
-
-  // Find the team from our mock data
-  const team = teams.find((t) => t.id === teamId)
+  const team= teams[0];
 
   if (!team) {
     return (
