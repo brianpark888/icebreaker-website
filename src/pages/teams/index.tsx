@@ -1,6 +1,5 @@
 'use client'
 
-import { useState } from "react"
 import { Users, ArrowRight } from 'lucide-react'
 import Link from "next/link"
 import Button from "@/components/ui/Button"
@@ -88,20 +87,6 @@ export default function TeamsPage() {
   )
 }
 
-const navItems = [
-  {
-    name: "dashboard",
-    label: "Dashboard",
-    href: "/dashboard",
-    icon: <Users className="h-5 w-5" />,
-  },
-  {
-    name: "teams",
-    label: "Teams",
-    href: "/teams",
-    icon: <Users className="h-5 w-5" />,
-  },
-]
 
 const teams = [
   {
