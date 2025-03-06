@@ -193,52 +193,52 @@ const stats = [
   },
 ]
 
-const leaderboard = [
-  {
-    name: "Sarah Johnson",
-    role: "Product Manager",
-    points: 850,
-    avatar: "/placeholder.svg?height=40&width=40",
-  },
-  {
-    name: "Michael Chen",
-    role: "Software Engineer",
-    points: 720,
-    avatar: "/placeholder.svg?height=40&width=40",
-  },
-  {
-    name: "Emma Wilson",
-    role: "UI Designer",
-    points: 690,
-    avatar: "/placeholder.svg?height=40&width=40",
-  },
-  {
-    name: "James Brown",
-    role: "Marketing Lead",
-    points: 645,
-    avatar: "/placeholder.svg?height=40&width=40",
-  },
-]
+// const leaderboard = [
+//   {
+//     name: "Sarah Johnson",
+//     role: "Product Manager",
+//     points: 850,
+//     avatar: "/placeholder.svg?height=40&width=40",
+//   },
+//   {
+//     name: "Michael Chen",
+//     role: "Software Engineer",
+//     points: 720,
+//     avatar: "/placeholder.svg?height=40&width=40",
+//   },
+//   {
+//     name: "Emma Wilson",
+//     role: "UI Designer",
+//     points: 690,
+//     avatar: "/placeholder.svg?height=40&width=40",
+//   },
+//   {
+//     name: "James Brown",
+//     role: "Marketing Lead",
+//     points: 645,
+//     avatar: "/placeholder.svg?height=40&width=40",
+//   },
+// ]
 
-const activities = [
-  {
-    title: "Team Building Game Completed",
-    time: "2 hours ago",
-    icon: <Trophy className="h-4 w-4 text-white" />,
-  },
-  {
-    title: "New Team Member Joined",
-    time: "5 hours ago",
-    icon: <Users className="h-4 w-4 text-white" />,
-  },
-  {
-    title: "Achievement Unlocked",
-    time: "1 day ago",
-    icon: <Trophy className="h-4 w-4 text-white" />,
-  },
-  {
-    title: "Game Session Scheduled",
-    time: "2 days ago",
-    icon: <Calendar className="h-4 w-4 text-white" />,
-  },
-]
+// const activities = [
+//   {
+//     title: "Team Building Game Completed",
+//     time: "2 hours ago",
+//     icon: <Trophy className="h-4 w-4 text-white" />,
+//   },
+//   {
+//     title: "New Team Member Joined",
+//     time: "5 hours ago",
+//     icon: <Users className="h-4 w-4 text-white" />,
+//   },
+//   {
+//     title: "Achievement Unlocked",
+//     time: "1 day ago",
+//     icon: <Trophy className="h-4 w-4 text-white" />,
+//   },
+//   {
+//     title: "Game Session Scheduled",
+//     time: "2 days ago",
+//     icon: <Calendar className="h-4 w-4 text-white" />,
+//   },
+// ]

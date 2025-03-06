@@ -29,13 +29,13 @@ export default function GamePage() {
 }
 
 // Loading Indicator
-function GameLoader() {
-  return (
-    <div className="w-full h-full flex items-center justify-center">
-      <div className="flex flex-col items-center gap-4">
-        <div className="w-16 h-16 rounded-full border-4 border-gray-600 border-t-white animate-spin" />
-        <p className="text-lg font-medium text-gray-400">Loading game...</p>
-      </div>
-    </div>
-  )
-}
+// function GameLoader() {
+//   return (
+//     <div className="w-full h-full flex items-center justify-center">
+//       <div className="flex flex-col items-center gap-4">
+//         <div className="w-16 h-16 rounded-full border-4 border-gray-600 border-t-white animate-spin" />
+//         <p className="text-lg font-medium text-gray-400">Loading game...</p>
+//       </div>
+//     </div>
+//   )
+// }

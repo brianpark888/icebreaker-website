@@ -1,29 +1,31 @@
-'use client'
+"use client";
 
-import { useState } from "react"
-import Button from "@/components/ui/Button"
-import BackButton from "@/components/ui/BackButton"
-import {useRouter} from 'next/navigation';
+import { useState } from "react";
+import Button from "@/components/ui/Button";
+import BackButton from "@/components/ui/BackButton";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    setIsLoading(true)
-    localStorage.setItem('username', e.currentTarget.username.value)
-    localStorage.setItem('team', 'Icebreakers')
+    e.preventDefault();
+    setIsLoading(true);
 
-    setIsLoading(false)
-    router.push('/dashboard')
+    // ✅ Fix: Explicitly cast `e.currentTarget.elements.username` as an HTMLInputElement
+    const usernameInput = e.currentTarget.elements.namedItem("username") as HTMLInputElement;
+    const username = usernameInput?.value || "";
+
+    localStorage.setItem("username", username);
+    localStorage.setItem("team", "Icebreakers");
+
+    setIsLoading(false);
+    router.push("/dashboard");
   }
-
-
 
   return (
     <div className="flex min-h-screen bg-background text-foreground relative">
-      
       {/* Back Button */}
       <BackButton path="/" displayString="Home" />
 
@@ -52,62 +54,14 @@ export default function Login() {
                   />
                 </div>
 
-                {/* <div className="space-y-2">
-                  <label htmlFor="password" className="block text-sm font-medium">
-                    Password
-                  </label>
-                  <input
-                    id="password"
-                    name="password"
-                    type="password"
-                    autoComplete="current-password"
-                    required
-                    className="block w-full rounded-md border border-muted/30 bg-muted/30 px-3 py-2 text-foreground shadow-sm backdrop-blur-sm focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/20 sm:text-sm"
-                  />
-                </div> */}
-
-                {/* <div className="flex items-center justify-between">
-                  <div className="flex items-center">
-                    <input
-                      id="remember-me"
-                      name="remember-me"
-                      type="checkbox"
-                      className="h-4 w-4 rounded border-muted/30 bg-muted/30 text-primary focus:ring-primary/20"
-                    />
-                    <label htmlFor="remember-me" className="ml-2 block text-sm">
-                      Remember me
-                    </label>
-                  </div>
-
-                  <div className="text-sm">
-                    <Link
-                      href="/forgot-password"
-                      className="text-primary hover:text-primary/90"
-                    >
-                      Forgot password?
-                    </Link>
-                  </div>
-                </div> */}
-
-                <Button
-                  type="submit"
-                  disabled={isLoading}
-                  className="w-full rounded-full"
-                >
+                <Button type="submit" disabled={isLoading} className="w-full rounded-full">
                   {isLoading ? "Signing in..." : "Sign in"}
                 </Button>
               </form>
             </div>
           </div>
-
-          {/* <p className="text-center text-sm text-muted-foreground">
-            Don&apos;t have an account?{" "}
-            <Link href="/signup" className="text-primary hover:text-primary/90">
-              Sign up
-            </Link>
-          </p> */}
         </div>
       </div>
     </div>
-  )
+  );
 }
