@@ -5,9 +5,16 @@ import { Users, Trophy, Activity, Settings, Home, Calendar } from 'lucide-react'
 import Link from "next/link"
 import Image from "next/image"
 import Button from "@/components/ui/Button"
+import { useRouter } from 'next/router'
 
 export default function Dashboard() {
   const [activePage, setActivePage] = useState("dashboard")
+  const router = useRouter()
+
+  function joinGame(){
+    localStorage.setItem('gameSession','12345')
+    router.push('/game')  
+  }
 
   return (
     <div className="flex h-screen bg-background">
@@ -44,7 +51,7 @@ export default function Dashboard() {
             <div className="flex items-center justify-between">
               <h1 className="text-3xl font-bold text-gradient">Team Dashboard for Icebreakers</h1>
               <Link href="/game">
-                <Button>
+                <Button className="px-6 rounded-full" onClick={() => joinGame()}>
                   Join Game
                 </Button>
               </Link>
