@@ -58,7 +58,6 @@ export default function TeamsPage() {
                         {team.status}
                       </div>
                     </div>
-                    <p className="text-sm text-muted-foreground mb-4 line-clamp-2">{team.description}</p>
                     <div className="flex items-center justify-between">
                       <div className="flex -space-x-2">
                         {team.members.slice(0, 3).map((member, index) => (
