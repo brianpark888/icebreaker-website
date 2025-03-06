@@ -28,7 +28,7 @@ export default function TeamSetup() {
       <h1 className="text-4xl font-bold">Team Setup</h1>
       <div className="max-w-3xl w-full grid gap-8 md:grid-cols-2">
         {/* Create Team Card */}
-        <div className="p-6 rounded-2xl bg-muted/10 backdrop-blur-md border border-muted/20 shadow-lg border border-white"> 
+        <div className="p-6 rounded-2xl bg-muted/10 backdrop-blur-md border border-muted/20 shadow-lg border border-muted"> 
           <h2 className="flex items-center gap-2 text-xl font-semibold">
             <Plus className="w-5 h-5" /> Create a Team
           </h2>
@@ -39,7 +39,7 @@ export default function TeamSetup() {
               <input id="teamName" placeholder="Enter team name" required className="w-full p-2 border rounded bg-background" />
             </div>
             <Button type="submit">
-              Create Team <ArrowRight className="w-4 h-4" />
+              Create Team
             </Button>
             {inviteLink && (
               <div className="mt-4 p-4 rounded-lg bg-muted/30 border border-muted">
@@ -54,7 +54,7 @@ export default function TeamSetup() {
         </div>
 
         {/* Join Team Card */}
-        <div className="p-6 rounded-2xl bg-muted/10 backdrop-blur-md border border border-white hover:bg-muted/5">
+        <div className="p-6 rounded-2xl bg-muted/10 backdrop-blur-md border border border-muted hover:bg-muted/5">
           <h2 className="flex items-center gap-2 text-xl font-semibold">
             <UserPlus className="w-5 h-5" /> Join a Team
           </h2>
@@ -65,7 +65,7 @@ export default function TeamSetup() {
               <input id="inviteCode" placeholder="Enter invite code" required className="w-full p-2 border rounded bg-background" />
             </div>
             <Button type="submit">
-              Join Team <ArrowRight className="w-4 h-4" />
+              Join Team
             </Button>
           </form>
         </div>

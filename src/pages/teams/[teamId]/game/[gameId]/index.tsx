@@ -13,9 +13,9 @@ export default function GamePage() {
     <div className="min-h-screen bg-gray-900 text-white relative flex flex-col">
       
       {/* Navigation */}
-      <nav className="p-4">
+      {/* <nav className="p-4">
         <BackButton path="/dashboard" displayString="Dashboard" />
-      </nav>
+      </nav> */}
 
       {/* Main Game Container */}
       <main className="flex-1 flex items-center justify-center p-4">

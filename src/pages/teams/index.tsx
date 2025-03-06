@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from "react"
-import { Users, Plus, ArrowRight } from 'lucide-react'
+import { Users, ArrowRight } from 'lucide-react'
 import Link from "next/link"
 import Button from "@/components/ui/Button"
 import Image from "next/image"
@@ -23,9 +23,11 @@ export default function TeamsPage() {
                 <h1 className="text-3xl font-bold text-gradient">Your Teams</h1>
                 <p className="text-muted-foreground mt-1">View and manage the teams you're part of.</p>
               </div>
-              <Button className="px-6 rounded-full">
-                Create Team
-              </Button>
+              <Link href="/team-setup" className="px-6 rounded-full">
+                <Button>
+                    Create Team
+                </Button>
+              </Link>
             </div>
 
             {/* Teams Grid */}
