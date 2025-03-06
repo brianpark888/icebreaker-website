@@ -12,7 +12,7 @@ export default function Dashboard() {
 
   function joinGame(){
     localStorage.setItem('gameSession','12345')
-    router.push('/game')  
+    await router.push('/game')  
   }
 
   return (
