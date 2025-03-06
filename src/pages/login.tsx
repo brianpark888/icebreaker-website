@@ -1,8 +1,6 @@
 'use client'
 
 import { useState } from "react"
-import Link from "next/link"
-import { ArrowLeft } from 'lucide-react'
 import Button from "@/components/ui/Button"
 import BackButton from "@/components/ui/BackButton"
 import {useRouter} from 'next/navigation';

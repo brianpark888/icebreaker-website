@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Users, ArrowRight, Plus, UserPlus } from "lucide-react"
+import { ArrowRight, Plus, UserPlus } from "lucide-react"
 import Button from "@/components/ui/Button"
 
 export default function TeamSetup() {

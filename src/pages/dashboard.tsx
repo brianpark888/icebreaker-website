@@ -3,7 +3,6 @@
 import { useState } from "react"
 import { Users, Trophy, Activity, Settings, Home, Calendar } from 'lucide-react'
 import Link from "next/link"
-import Image from "next/image"
 import Button from "@/components/ui/Button"
 import { useRouter } from 'next/router'
 
