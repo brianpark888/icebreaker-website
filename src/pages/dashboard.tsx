@@ -10,7 +10,7 @@ export default function Dashboard() {
   const [activePage, setActivePage] = useState("dashboard")
   const router = useRouter()
 
-  function joinGame(){
+  async function joinGame(){
     localStorage.setItem('gameSession','12345')
     await router.push('/game')  
   }
