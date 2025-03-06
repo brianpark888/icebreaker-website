@@ -37,7 +37,7 @@ export default function TeamPage() {
 
   function joinGame(gameId: string) {
     localStorage.setItem("gameSession", gameId)
-    router.push(`/teams/${params.teamId}/game/ASDASD`)
+    router.push(`/teams/${String(params.teamId)}/game/${gameId}`)
   }
 
   return (

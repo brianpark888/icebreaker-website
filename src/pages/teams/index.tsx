@@ -19,7 +19,7 @@ export default function TeamsPage() {
             <div className="flex items-center justify-between">
               <div>
                 <h1 className="text-3xl font-bold text-gradient">Your Teams</h1>
-                <p className="text-muted-foreground mt-1">View and manage the teams you're part of.</p>
+                <p className="text-muted-foreground mt-1">View and manage the teams you are a part of.</p>
               </div>
               <Link href="/team-setup" className="px-6 rounded-full">
                 <Button>
