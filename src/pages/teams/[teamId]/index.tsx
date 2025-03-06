@@ -52,7 +52,7 @@ export default function TeamPage() {
             {/* Header */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <Button size="icon" className="rounded-full" onClick={() => router.push("/teams")}>
+                <Button className="rounded-full" onClick={() => router.push("/teams")}>
                   <ArrowLeft className="h-4 w-4" />
                 </Button>
                 <h1 className="text-3xl font-bold text-gradient">Team Dashboard for {team.name}</h1>
@@ -306,7 +306,7 @@ export default function TeamPage() {
             <div className="p-6 rounded-2xl bg-gradient-to-b from-muted/50 to-muted/30 backdrop-blur-sm border border-muted/20">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl font-semibold">Team Chat</h2>
-                <Button size="icon" className="rounded-full">
+                <Button className="rounded-full">
                   <Bell className="h-4 w-4" />
                 </Button>
               </div>
