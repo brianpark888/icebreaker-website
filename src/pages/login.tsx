@@ -21,7 +21,7 @@ export default function Login() {
     localStorage.setItem("team", "Icebreakers");
 
     setIsLoading(false);
-    router.push("/dashboard");
+    router.push("/teams");
   }
 
   return (
