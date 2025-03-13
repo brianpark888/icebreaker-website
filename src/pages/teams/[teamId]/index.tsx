@@ -124,149 +124,7 @@ export default function TeamPage() {
               </div>
             </div>
 
-            {/* Live Games Section */}
-            <div className="p-6 rounded-2xl bg-gradient-to-b from-muted/50 to-muted/30 backdrop-blur-sm border border-muted/20">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-semibold">Live Games</h2>
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-                  <span className="text-sm text-green-500">2 games in progress</span>
-                </div>
-              </div>
-
-              <div className="grid gap-4 md:grid-cols-2">
-                {liveGames.map((game) => (
-                  <div
-                    key={game.id}
-                    className="p-4 rounded-xl bg-muted/30 border border-muted/20 hover:border-primary/20 transition-colors"
-                  >
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center gap-3">
-                        <div className="p-2 rounded-lg bg-gradient-to-r from-blue-500 to-violet-500">
-                          <Play className="h-4 w-4 text-white" />
-                        </div>
-                        <div>
-                          <h3 className="font-medium">{game.name}</h3>
-                          <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                            <Clock className="h-3 w-3" />
-                            <span>Started {game.startedAgo}</span>
-                          </div>
-                        </div>
-                      </div>
-                      <Button className="px-4 py-1 h-8 rounded-full text-xs" onClick={() => joinGame(game.id)}>
-                        Join Now
-                      </Button>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <div className="flex -space-x-2">
-                        {game.participants.map((participant, index) => (
-                          <div key={index} className="w-6 h-6 rounded-full border-2 border-background overflow-hidden">
-                            <Image
-                              src={`/placeholder.svg?height=24&width=24&text=${participant.charAt(0)}`}
-                              alt={participant}
-                              width={24}
-                              height={24}
-                              className="bg-muted"
-                            />
-                          </div>
-                        ))}
-                        {game.participants.length > 4 && (
-                          <div className="w-6 h-6 rounded-full border-2 border-background bg-muted flex items-center justify-center text-xs">
-                            +{game.participants.length - 4}
-                          </div>
-                        )}
-                      </div>
-                      <span className="text-xs text-muted-foreground">{game.participants.length} participants</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {liveGames.length === 0 && (
-                <div className="text-center py-8 text-muted-foreground">
-                  <p>No live games at the moment</p>
-                  <Button className="mt-4">Start a Game</Button>
-                </div>
-              )}
-            </div>
-
-            {/* Upcoming Games */}
-            <div className="p-6 rounded-2xl bg-gradient-to-b from-muted/50 to-muted/30 backdrop-blur-sm border border-muted/20">
-              <h2 className="text-xl font-semibold mb-4">Upcoming Games</h2>
-              <div className="space-y-4">
-                {upcomingGames.map((game, index) => (
-                  <div key={index} className="flex items-center justify-between p-4 rounded-lg bg-muted/30">
-                    <div className="flex items-center gap-4">
-                      <div className="p-2 rounded-lg bg-gradient-to-r from-blue-500 to-violet-500">
-                        <Calendar className="h-4 w-4 text-white" />
-                      </div>
-                      <div>
-                        <p className="font-medium">{game.name}</p>
-                        <p className="text-sm text-muted-foreground">
-                          {game.date} • {game.time}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <span className="text-sm text-muted-foreground">{game.participants} participants</span>
-                      <Button className="px-4 py-1 h-8 rounded-full text-xs">
-                        RSVP
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Two Column Layout */}
-            <div className="grid gap-6 lg:grid-cols-2">
-              {/* Team Members Panel */}
-              <div className="p-6 rounded-2xl bg-gradient-to-b from-muted/50 to-muted/30 backdrop-blur-sm border border-muted/20">
-                <h2 className="text-xl font-semibold mb-4">Team Members</h2>
-                <div className="space-y-4">
-                  {team.members.map((member, index) => (
-                    <div key={index} className="flex items-center gap-4 p-4 rounded-lg bg-muted/30">
-                      <div className="flex-shrink-0">
-                        <Image
-                          src={`/placeholder.svg?height=40&width=40&text=${member.name.charAt(0)}`}
-                          alt={member.name}
-                          width={40}
-                          height={40}
-                          className="rounded-full bg-muted"
-                        />
-                      </div>
-                      <div className="flex-1">
-                        <p className="font-medium">{member.name}</p>
-                        <p className="text-sm text-muted-foreground">{member.role}</p>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Trophy className="h-4 w-4 text-yellow-500" />
-                        <span className="font-semibold">{Math.floor(Math.random() * 500) + 100}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Recent Activity Panel */}
-              <div className="p-6 rounded-2xl bg-gradient-to-b from-muted/50 to-muted/30 backdrop-blur-sm border border-muted/20">
-                <h2 className="text-xl font-semibold mb-4">Recent Activity</h2>
-                <div className="space-y-4">
-                  {activities.map((activity, index) => (
-                    <div key={index} className="flex items-center gap-4 p-4 rounded-lg bg-muted/30">
-                      <div className="p-2 rounded-lg bg-gradient-to-r from-blue-500 to-violet-500">{activity.icon}</div>
-                      <div className="flex-1">
-                        <p className="font-medium">{activity.title}</p>
-                        <p className="text-sm text-muted-foreground">{activity.time}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Team Performance */}
+                        {/* Team Performance */}
             <div className="p-6 rounded-2xl bg-gradient-to-b from-muted/50 to-muted/30 backdrop-blur-sm border border-muted/20">
               <h2 className="text-xl font-semibold mb-4">Team Performance</h2>
               <div className="grid gap-6 md:grid-cols-3">
@@ -298,9 +156,110 @@ export default function TeamPage() {
                 </div>
               </div>
             </div>
+{/* Two Column Layout */}
+<div className="grid gap-6 lg:grid-cols-2">
+  {/* Live Games Section */}
+  <div className="p-6 rounded-2xl bg-gradient-to-b from-muted/50 to-muted/30 backdrop-blur-sm border border-muted/20">
+    <div className="flex items-center justify-between mb-4">
+      <h2 className="text-xl font-semibold">Live Games</h2>
+      <div className="flex items-center gap-2">
+        <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+        <span className="text-sm text-green-500">{liveGames.length} games in progress</span>
+      </div>
+    </div>
+
+    <div className="grid gap-4">
+      {liveGames.map((game) => (
+        <div
+          key={game.id}
+          className="p-4 rounded-xl bg-muted/30 border border-muted/20 hover:border-primary/20 transition-colors"
+        >
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-gradient-to-r from-blue-500 to-violet-500">
+                <Play className="h-4 w-4 text-white" />
+              </div>
+              <div>
+                <h3 className="font-medium">{game.name}</h3>
+                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <Clock className="h-3 w-3" />
+                  <span>Started {game.startedAgo}</span>
+                </div>
+              </div>
+            </div>
+            <Button className="px-4 py-1 h-8 rounded-full text-xs" onClick={() => joinGame(game.id)}>
+              Join Now
+            </Button>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div className="flex -space-x-2">
+              {game.participants.map((participant, index) => (
+                <div key={index} className="w-6 h-6 rounded-full border-2 border-background overflow-hidden">
+                  <Image
+                    src={`/placeholder.svg?height=24&width=24&text=${participant.charAt(0)}`}
+                    alt={participant}
+                    width={24}
+                    height={24}
+                    className="bg-muted"
+                  />
+                </div>
+              ))}
+              {game.participants.length > 4 && (
+                <div className="w-6 h-6 rounded-full border-2 border-background bg-muted flex items-center justify-center text-xs">
+                  +{game.participants.length - 4}
+                </div>
+              )}
+            </div>
+            <span className="text-xs text-muted-foreground">{game.participants.length} participants</span>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    {liveGames.length === 0 && (
+      <div className="text-center py-8 text-muted-foreground">
+        <p>No live games at the moment</p>
+        <Button className="mt-4">Start a Game</Button>
+      </div>
+    )}
+  </div>
+
+  {/* Team Members Panel */}
+  <div className="p-6 rounded-2xl bg-gradient-to-b from-muted/50 to-muted/30 backdrop-blur-sm border border-muted/20">
+    <h2 className="text-xl font-semibold mb-4">Team Members</h2>
+    <div className="space-y-4">
+      {team.members.map((member, index) => (
+        <div key={index} className="flex items-center gap-4 p-4 rounded-lg bg-muted/30">
+          <div className="flex-shrink-0">
+            <Image
+              src={`/placeholder.svg?height=40&width=40&text=${member.name.charAt(0)}`}
+              alt={member.name}
+              width={40}
+              height={40}
+              className="rounded-full bg-muted"
+            />
+          </div>
+          <div className="flex-1">
+            <p className="font-medium">{member.name}</p>
+            <p className="text-sm text-muted-foreground">{member.role}</p>
+          </div>
+          <div className="flex items-center gap-2">
+            <Trophy className="h-4 w-4 text-yellow-500" />
+            <span className="font-semibold">{Math.floor(Math.random() * 500) + 100}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+            
+
+
 
             {/* Team Chat */}
-            <div className="p-6 rounded-2xl bg-gradient-to-b from-muted/50 to-muted/30 backdrop-blur-sm border border-muted/20">
+            {/* <div className="p-6 rounded-2xl bg-gradient-to-b from-muted/50 to-muted/30 backdrop-blur-sm border border-muted/20">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl font-semibold">Team Chat</h2>
                 <Button className="rounded-full">
@@ -314,7 +273,7 @@ export default function TeamPage() {
                   <Button className="mt-4">Start Conversation</Button>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </main>
