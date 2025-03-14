@@ -1,11 +1,16 @@
 'use client'
 
+import { useState } from 'react'
 import { Users, ArrowRight } from 'lucide-react'
 import Link from "next/link"
 import Button from "@/components/ui/Button"
 import Image from "next/image"
 
 export default function TeamsPage() {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const openModal = () => setIsModalOpen(true)
+  const closeModal = () => setIsModalOpen(false)
 
   return (
     <div className="flex h-screen bg-background">
@@ -83,6 +88,58 @@ export default function TeamsPage() {
           </div>
         </div>
       </main>
+
+      {/* Create Team Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-background p-6 rounded-2xl w-full max-w-md relative">
+            <button 
+              onClick={closeModal}
+              className="absolute top-4 right-4 text-muted-foreground hover:text-foreground"
+            >
+              <X className="h-5 w-5" />
+            </button>
+            
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold">Create New Team</h2>
+            </div>
+            
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              // Handle form submission here
+              closeModal();
+            }}>
+              <div className="space-y-4">
+                <div>
+                  <label htmlFor="team-name" className="block text-sm font-medium mb-1">
+                    Team Name
+                  </label>
+                  <input
+                    id="team-name"
+                    type="text"
+                    className="w-full p-2 rounded-md border border-muted bg-background"
+                    placeholder="Enter team name"
+                    required
+                  />
+                </div>
+                
+                <div className="flex justify-end space-x-3 pt-4">
+                  <Button 
+                    type="button" 
+                    onClick={closeModal}
+                    variant="outline"
+                  >
+                    Cancel
+                  </Button>
+                  <Button type="submit">
+                    Create Team
+                  </Button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
