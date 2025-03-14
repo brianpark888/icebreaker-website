@@ -4,8 +4,19 @@ import { Users, ArrowRight } from 'lucide-react'
 import Link from "next/link"
 import Button from "@/components/ui/Button"
 import Image from "next/image"
+import Wrapper from "../../components/ui/wrapper"
 
 export default function TeamsPage() {
+
+  const [isModalVisible, setIsModalVisible] = useState(false)
+
+  const toggleModal = () => {
+    setIsModalVisible(wasModalVisible =>  !wasModalVisible)
+  }
+
+  const onBackdropClick = () => {
+    setIsModalVisible(false)
+  }
 
   return (
     <div className="flex h-screen bg-background">
@@ -21,11 +32,10 @@ export default function TeamsPage() {
                 <h1 className="text-3xl font-bold text-gradient">Your Teams</h1>
                 <p className="text-muted-foreground mt-1">View and manage the teams you are a part of.</p>
               </div>
-              <Link href="/team-setup" className="px-6 rounded-full">
-                <Button>
-                    Create Team
-                </Button>
-              </Link>
+              <Button>
+                  Create Team
+              </Button>
+              <Wrapper Wrapper={Wrapper} isModalVisible={isModalVisible} onBackdropClick={toggleModal} />
             </div>
 
             {/* Teams Grid */}
