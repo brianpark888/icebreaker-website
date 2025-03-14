@@ -4,8 +4,12 @@ import { Users, ArrowRight } from 'lucide-react'
 import Link from "next/link"
 import Button from "@/components/ui/Button"
 import Image from "next/image"
+import Modal from "../../components/ui/Modal";
+import { useState } from "react";
 
 export default function TeamsPage() {
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <div className="flex h-screen bg-background">
@@ -21,11 +25,11 @@ export default function TeamsPage() {
                 <h1 className="text-3xl font-bold text-gradient">Your Teams</h1>
                 <p className="text-muted-foreground mt-1">View and manage the teams you are a part of.</p>
               </div>
-              <Link href="/team-setup" className="px-6 rounded-full">
-                <Button>
-                    Create Team
-                </Button>
-              </Link>
+              <Button onClick={() => setIsModalOpen(true)}>Create Team</Button>
+              <Modal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+              />
             </div>
 
             {/* Teams Grid */}
