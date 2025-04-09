@@ -23,6 +23,7 @@
         <div id="unity-build-title">Icebreaker Symposium</div>
       </div>
     </div>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script>
 
       var container = document.querySelector("#unity-container");
@@ -103,61 +104,83 @@
       var script = document.createElement("script");
       var MyGameInstance = null;
 
+      FetchData();
 
-      let samplePlayerIDs = new Array(7);
-      let samplePlayerProfiles = new Array(5);
-      // Debug Sample player IDS and profile links
+      async function FetchData()
       {
-        samplePlayerIDs[0] = "Seunghee";
-        samplePlayerIDs[1] = "Brian";
-        samplePlayerIDs[2] = "Steve";
-        samplePlayerIDs[3] = "Premlatha";
-        samplePlayerIDs[4] = "Steve";
-        samplePlayerIDs[5] = "Angela";
-        samplePlayerIDs[6] = "Matt";
-        samplePlayerProfiles[0] = "https://i.imgur.com/XFw3GFe.jpeg";
-        samplePlayerProfiles[1] = "https://i.imgur.com/xiBp6q4.jpeg";
-        samplePlayerProfiles[2] = "https://i.imgur.com/HeUs6vh.jpeg";
-        samplePlayerProfiles[3] = "https://i.imgur.com/AJDBrLT.jpeg";
-        samplePlayerProfiles[4] = "https://i.imgur.com/UXm7DqB.png";
-      }
+        let samplePlayerIDs = new Array(7);
+        let samplePlayerProfiles = new Array(5);
+        // Debug Sample player IDS and profile links
+        {
+          samplePlayerIDs[0] = "Seunghee";
+          samplePlayerIDs[1] = "Brian";
+          samplePlayerIDs[2] = "Steve";
+          samplePlayerIDs[3] = "Premlatha";
+          samplePlayerIDs[4] = "Steve";
+          samplePlayerIDs[5] = "Angela";
+          samplePlayerIDs[6] = "Matt";
+          samplePlayerProfiles[0] = "https://i.imgur.com/XFw3GFe.jpeg";
+          samplePlayerProfiles[1] = "https://i.imgur.com/xiBp6q4.jpeg";
+          samplePlayerProfiles[2] = "https://i.imgur.com/HeUs6vh.jpeg";
+          samplePlayerProfiles[3] = "https://i.imgur.com/AJDBrLT.jpeg";
+          samplePlayerProfiles[4] = "https://i.imgur.com/UXm7DqB.png";
+        }
 
-      // TODO: Fill in the information based on localStorage
-      var gameRoomName = "test123";
-      var playerID = "";
-      var playerProfile = "";
+        const AUTH_SUPABASE_URL="https://lahdueuocnmtamgybroa.supabase.co";
+        const AUTH_SUPABASE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxhaGR1ZXVvY25tdGFtZ3licm9hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDExNjUxMDIsImV4cCI6MjA1Njc0MTEwMn0.X-CgPM3SZ8bHwzU764d8xFC3W9kU0ktYAjpmi5enfX8";
+
+        // TODO: Fill in the information based on localStorage
+        var gameRoomName = "test123";
+        var playerID = "";
+        var playerProfile = "";
+
+        // DEBUG setting information
+        {
+          playerID = samplePlayerIDs[Math.floor(Math.random() * 7)];
+          playerProfile = samplePlayerProfiles[Math.floor(Math.random() * 5)];
+        }
+
+        /*
+        // DEBUG Database Fetching
+        {
+          playerID = "asdf"
+          const { createClient } = supabase;
+          const _supabase = createClient(AUTH_SUPABASE_URL, AUTH_SUPABASE_KEY);
+
+          const { data, error } = await _supabase
+            .from('users')
+            .select('imgUrl')
+            .eq('name', playerID)
+
+          playerProfile = data[0].imgUrl;
+          console.log('Supabase Instance: ', data[0].imgUrl);
+        }
+          */
 
 
+        script.src = loaderUrl;
+        script.onload = () => {
+          createUnityInstance(canvas, config, (progress) => {
+            progressBarFull.style.width = 100 * progress + "%";
+                }).then((unityInstance) => {
+                  loadingBar.style.display = "none";
+                  
+                  MyGameInstance = unityInstance;
+                  MyGameInstance.SendMessage('Instance', 'GetMessage', 'This text replaced yippee!');
+                  MyGameInstance.SendMessage('Instance', 'JoinLobby', gameRoomName);
+                  MyGameInstance.SendMessage('Instance', 'SetUserID', playerID);
+                  MyGameInstance.SendMessage('Instance', 'SetProfilePicture', playerProfile);
 
-      // DEBUG setting information
-      {
-        playerID = samplePlayerIDs[Math.floor(Math.random() * 7)];
-        playerProfile = samplePlayerProfiles[Math.floor(Math.random() * 5)];
-      }
+                  fullscreenButton.onclick = () => {
+                    unityInstance.SetFullscreen(1);
+                  };
+                }).catch((message) => {
+                  alert(message);
+                });
+              };
 
-
-      script.src = loaderUrl;
-      script.onload = () => {
-        createUnityInstance(canvas, config, (progress) => {
-          progressBarFull.style.width = 100 * progress + "%";
-              }).then((unityInstance) => {
-                loadingBar.style.display = "none";
-                
-                MyGameInstance = unityInstance;
-                MyGameInstance.SendMessage('Instance', 'GetMessage', 'This text replaced yippee!');
-                MyGameInstance.SendMessage('Instance', 'JoinLobby', gameRoomName);
-                MyGameInstance.SendMessage('Instance', 'SetUserID', playerID);
-                MyGameInstance.SendMessage('Instance', 'SetProfilePicture', playerProfile);
-
-                fullscreenButton.onclick = () => {
-                  unityInstance.SetFullscreen(1);
-                };
-              }).catch((message) => {
-                alert(message);
-              });
-            };
-
-      document.body.appendChild(script);
+        document.body.appendChild(script);
+        }
 
     </script>
   </body>
