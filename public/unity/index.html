@@ -1,22 +1,27 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en-us">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Unity WebGL Player | Icebreaker Symposium</title>
-    <link rel="shortcut icon" href="TemplateData/favicon.ico">
-    <link rel="stylesheet" href="TemplateData/style.css">
+    <link rel="shortcut icon" href="TemplateData/favicon.ico" />
+    <link rel="stylesheet" href="TemplateData/style.css" />
   </head>
   <body>
     <div id="unity-container" class="unity-desktop">
-      <canvas id="unity-canvas" width=1440 height=810 tabindex="-1"></canvas>
+      <canvas
+        id="unity-canvas"
+        width="1440"
+        height="810"
+        tabindex="-1"
+      ></canvas>
       <div id="unity-loading-bar">
         <div id="unity-logo"></div>
         <div id="unity-progress-bar-empty">
           <div id="unity-progress-bar-full"></div>
         </div>
       </div>
-      <div id="unity-warning"> </div>
+      <div id="unity-warning"></div>
       <div id="unity-footer">
         <div id="unity-webgl-logo"></div>
         <div id="unity-fullscreen-button"></div>
@@ -25,7 +30,6 @@
     </div>
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script>
-
       var container = document.querySelector("#unity-container");
       var canvas = document.querySelector("#unity-canvas");
       var loadingBar = document.querySelector("#unity-loading-bar");
@@ -41,15 +45,18 @@
       // user.
       function unityShowBanner(msg, type) {
         function updateBannerVisibility() {
-          warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
+          warningBanner.style.display = warningBanner.children.length
+            ? "block"
+            : "none";
         }
-        var div = document.createElement('div');
+        var div = document.createElement("div");
         div.innerHTML = msg;
         warningBanner.appendChild(div);
-        if (type == 'error') div.style = 'background: red; padding: 10px;';
+        if (type == "error") div.style = "background: red; padding: 10px;";
         else {
-          if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
-          setTimeout(function() {
+          if (type == "warning")
+            div.style = "background: yellow; padding: 10px;";
+          setTimeout(function () {
             warningBanner.removeChild(div);
             updateBannerVisibility();
           }, 5000);
@@ -80,18 +87,17 @@
       if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
         // Mobile device style: fill the whole browser client area with the game canvas:
 
-        var meta = document.createElement('meta');
-        meta.name = 'viewport';
-        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
-        document.getElementsByTagName('head')[0].appendChild(meta);
+        var meta = document.createElement("meta");
+        meta.name = "viewport";
+        meta.content =
+          "width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes";
+        document.getElementsByTagName("head")[0].appendChild(meta);
         container.className = "unity-mobile";
         canvas.className = "unity-mobile";
 
         // To lower canvas resolution on mobile devices to gain some
         // performance, uncomment the following line:
         // config.devicePixelRatio = 1;
-
-
       } else {
         // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
 
@@ -106,8 +112,18 @@
 
       FetchData();
 
-      async function FetchData()
-      {
+      async function callApi() {
+        try {
+          const res = await fetch("/api/hello"); // Adjust this if needed
+          const data = await res.json();
+          console.log("API response:", data);
+        } catch (err) {
+          console.error("API call failed:", err);
+        }
+      }
+      callApi();
+
+      async function FetchData() {
         let samplePlayerIDs = new Array(7);
         let samplePlayerProfiles = new Array(5);
         // Debug Sample player IDS and profile links
@@ -126,8 +142,9 @@
           samplePlayerProfiles[4] = "https://i.imgur.com/UXm7DqB.png";
         }
 
-        const AUTH_SUPABASE_URL="https://lahdueuocnmtamgybroa.supabase.co";
-        const AUTH_SUPABASE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxhaGR1ZXVvY25tdGFtZ3licm9hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDExNjUxMDIsImV4cCI6MjA1Njc0MTEwMn0.X-CgPM3SZ8bHwzU764d8xFC3W9kU0ktYAjpmi5enfX8";
+        const AUTH_SUPABASE_URL = "https://lahdueuocnmtamgybroa.supabase.co";
+        const AUTH_SUPABASE_KEY =
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxhaGR1ZXVvY25tdGFtZ3licm9hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDExNjUxMDIsImV4cCI6MjA1Njc0MTEwMn0.X-CgPM3SZ8bHwzU764d8xFC3W9kU0ktYAjpmi5enfX8";
 
         // TODO: Fill in the information based on localStorage
         var gameRoomName = "test123";
@@ -157,31 +174,39 @@
         }
           */
 
-
         script.src = loaderUrl;
         script.onload = () => {
           createUnityInstance(canvas, config, (progress) => {
             progressBarFull.style.width = 100 * progress + "%";
-                }).then((unityInstance) => {
-                  loadingBar.style.display = "none";
-                  
-                  MyGameInstance = unityInstance;
-                  MyGameInstance.SendMessage('Instance', 'GetMessage', 'This text replaced yippee!');
-                  MyGameInstance.SendMessage('Instance', 'JoinLobby', gameRoomName);
-                  MyGameInstance.SendMessage('Instance', 'SetUserID', playerID);
-                  MyGameInstance.SendMessage('Instance', 'SetProfilePicture', playerProfile);
+          })
+            .then((unityInstance) => {
+              loadingBar.style.display = "none";
 
-                  fullscreenButton.onclick = () => {
-                    unityInstance.SetFullscreen(1);
-                  };
-                }).catch((message) => {
-                  alert(message);
-                });
+              MyGameInstance = unityInstance;
+              MyGameInstance.SendMessage(
+                "Instance",
+                "GetMessage",
+                "This text replaced yippee!",
+              );
+              MyGameInstance.SendMessage("Instance", "JoinLobby", gameRoomName);
+              MyGameInstance.SendMessage("Instance", "SetUserID", playerID);
+              MyGameInstance.SendMessage(
+                "Instance",
+                "SetProfilePicture",
+                playerProfile,
+              );
+
+              fullscreenButton.onclick = () => {
+                unityInstance.SetFullscreen(1);
               };
+            })
+            .catch((message) => {
+              alert(message);
+            });
+        };
 
         document.body.appendChild(script);
-        }
-
+      }
     </script>
   </body>
 </html>
