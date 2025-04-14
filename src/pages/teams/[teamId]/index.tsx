@@ -106,7 +106,7 @@ export default function TeamPage() {
                 </div>
               </div>
               <div className="flex gap-4">
-                <Button onClick={() => setIsModalOpen(true)} className="px-6 rounded-full">Create New Game</Button>
+                <Button onClick={() => setIsModalOpen(true)} className="px-6 rounded-full">Create Game</Button>
                 {<CreateGameModal
                   isOpen={isModalOpen}
                   onClose={() => setIsModalOpen(false)}
