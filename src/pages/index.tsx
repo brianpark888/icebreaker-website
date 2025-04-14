@@ -4,6 +4,9 @@ import Link from "next/link"
 import dynamic from "next/dynamic"
 import Button from "@/components/ui/Button";
 
+import { useEffect } from 'react';
+
+
 // Dynamically import HeroScene to avoid SSR issues
 const HeroScene = dynamic(() => import("@/components/hero-scene"), {
   ssr: false,
@@ -18,6 +21,7 @@ type Feature = {
 
 
 export default function Home() {
+
   const features: Feature[] = [
     {
       title: "Icebreakers That Actually Work",
