@@ -92,7 +92,7 @@ export default function TeamPage() {
                 <Button className="bg-transparent" onClick={() => router.push("/teams")}>
                   <ArrowLeft className="h-4 w-4" />
                 </Button>
-                <h1 className="text-3xl font-bold text-gradient">Team Dashboard for {team.name}</h1>
+                <h1 className="text-3xl font-bold text-gradient">{team.team_name} Dashboard</h1>
                 <div
                   className={`px-3 py-1 rounded-full text-xs font-medium ${
                     team.status === "Active"
