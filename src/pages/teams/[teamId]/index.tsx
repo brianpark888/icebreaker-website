@@ -82,22 +82,6 @@ export default function TeamPage() {
     router.push(`/teams/${teamId}/game/${gameId}`)
   }
 
-  // Mock liveGames until wired to backend
-  const liveGames = [
-    {
-      id: "game-1",
-      name: "Two Truths and a Lie",
-      startedAgo: "15 minutes ago",
-      participants: members.map(m => m.username).slice(0, 5),
-    },
-    {
-      id: "game-2",
-      name: "Virtual Scavenger Hunt",
-      startedAgo: "5 minutes ago",
-      participants: members.map(m => m.username).slice(0, 3),
-    },
-  ]
-
   return (
     <div className="flex h-screen bg-background">
       <main className="flex-1 overflow-auto">
@@ -149,7 +133,7 @@ export default function TeamPage() {
                   <h2 className="text-xl font-semibold">Live Games</h2>
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-                    <span className="text-sm text-green-500">{liveGames.length} games in progress</span>
+                    <span className="text-sm text-green-500">{games.length} games in progress</span>
                   </div>
                 </div>
 
