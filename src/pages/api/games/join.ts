@@ -47,6 +47,30 @@ export default async function handler(
         .json({ message: "User is already part of the game" });
     }
 
+    // 3. Check if there is space in the game session
+    if (gameSession.is_single_player) {
+      return res.status(403).json({
+        detail: "This game session is for single player only",
+      });
+    } else {
+      const { count, error: countError } = await supabase
+        .from("game_participants")
+        .select("*", { count: "exact" })
+        .eq("game_session_id", game_session_id);
+
+      if (countError) {
+        return res.status(500).json({
+          detail: "Error counting participants",
+        });
+      }
+
+      if ((count ?? 0) >= gameSession.game_size) {
+        return res.status(403).json({
+          detail: "Game session is full",
+        });
+      }
+    }
+
     // 3. Add the user to the game_participants table
     const { error: insertError } = await supabase
       .from("game_participants")
