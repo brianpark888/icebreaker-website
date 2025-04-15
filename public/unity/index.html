@@ -110,18 +110,34 @@
       var script = document.createElement("script");
       var MyGameInstance = null;
 
-      FetchData();
+      let username;
+      let gameId;
+
+      // Let parent know you're ready to receive data
+      window.parent.postMessage({ type: "iframe-ready" }, "*");
+
+      const waitForMessage = new Promise((resolve) => {
+        window.addEventListener("message", (event) => {
+          if (event.data.username && event.data.gameId) {
+            username = event.data.username;
+            gameId = event.data.gameId;
+            resolve(); // Only resolves when we get the data
+          }
+        });
+      });
 
       async function callApi() {
+        console.log("Calling API...");
         try {
-          const res = await fetch("/api/hello"); // Adjust this if needed
+          const res = await fetch(`/api/games/${gameId}`);
           const data = await res.json();
           console.log("API response:", data);
         } catch (err) {
           console.error("API call failed:", err);
         }
       }
-      callApi();
+
+      FetchData();
 
       async function FetchData() {
         let samplePlayerIDs = new Array(7);
@@ -179,8 +195,18 @@
           createUnityInstance(canvas, config, (progress) => {
             progressBarFull.style.width = 100 * progress + "%";
           })
-            .then((unityInstance) => {
+            .then(async (unityInstance) => {
               loadingBar.style.display = "none";
+
+              await waitForMessage;
+              await callApi();
+              MyGameInstance.SendMessage("Instance", "JoinLobby", gameId);
+              MyGameInstance.SendMessage("Instance", "SetUserID", username);
+              MyGameInstance.SendMessage(
+                "Instance",
+                "SetProfilePicture",
+                playerProfile,
+              );
 
               MyGameInstance = unityInstance;
               MyGameInstance.SendMessage(
