@@ -34,14 +34,14 @@ export default async function handler(
         .select("*")
         .eq("game_session_id", game_session_id)
         .eq("user_id", user_id);
-    console.log(participantError);
+
     if (participantError) {
       return res.status(500).json({
         detail: "Error checking existing participant",
       });
     }
 
-    if (existingParticipant) {
+    if (existingParticipant.length == 1) {
       return res
         .status(200)
         .json({ message: "User is already part of the game" });
