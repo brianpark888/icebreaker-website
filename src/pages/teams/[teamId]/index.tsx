@@ -76,10 +76,40 @@ export default function TeamPage() {
     );
   }
 
-  function joinGame(gameId: string) {
-    localStorage.setItem("gameSession", gameId);
-    router.push(`/teams/${teamId}/game/${gameId}`);
-  }
+  const joinGame = async (gameId: string) => {
+    const userId = localStorage.getItem("user_id");
+    const username = localStorage.getItem("username");
+
+    if (!userId || !username) {
+      return alert("You must be logged in to join the game.");
+    }
+
+    try {
+      const res = await fetch(`/api/games/join`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          game_session_id: gameId,
+          user_id: userId,
+          username: username,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        localStorage.setItem("gameSession", gameId);
+        router.push(`/teams/${teamId}/game/${gameId}`);
+      } else {
+        alert(data.detail || "Failed to join the game");
+      }
+    } catch (err) {
+      console.error("Error joining the game:", err);
+      alert("Something went wrong. Please try again.");
+    }
+  };
 
   return (
     <div className="flex h-screen bg-background">
@@ -116,13 +146,11 @@ export default function TeamPage() {
                 >
                   Create Game
                 </Button>
-                {
-                  <CreateGameModal
-                    isOpen={isModalOpen}
-                    onClose={() => setIsModalOpen(false)}
-                    teamId={teamId}
-                  />
-                }
+                <CreateGameModal
+                  isOpen={isModalOpen}
+                  onClose={() => setIsModalOpen(false)}
+                  teamId={teamId}
+                />
                 <Button onClick={() => setInviteOpen(true)}>
                   Invite Members
                 </Button>
@@ -134,17 +162,8 @@ export default function TeamPage() {
               </div>
             </div>
 
-            {/* Stats */}
-            {/* <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              <StatCard icon={<Users className="h-5 w-5 text-white" />} label="Team Members" value={members.length} />
-              <StatCard icon={<Trophy className="h-5 w-5 text-white" />} label="Games Played" value={Math.floor(Math.random() * 20) + 5} />
-              <StatCard icon={<Activity className="h-5 w-5 text-white" />} label="Active Players" value={Math.floor(Math.random() * 10) + 3} />
-              <StatCard icon={<Trophy className="h-5 w-5 text-white" />} label="Total Points" value={Math.floor(Math.random() * 1000) + 500} />
-            </div> */}
-
             {/* Games + Members */}
             <div className="grid gap-6 lg:grid-cols-2">
-              {/* Live Games */}
               <div className="rounded-2xl border border-muted/20 bg-gradient-to-b from-muted/50 to-muted/30 p-6 backdrop-blur-sm">
                 <div className="mb-4 flex items-center justify-between">
                   <h2 className="text-xl font-semibold">Live Games</h2>
@@ -264,30 +283,6 @@ export default function TeamPage() {
           </div>
         </div>
       </main>
-    </div>
-  );
-}
-
-function StatCard({
-  icon,
-  label,
-  value,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  value: number;
-}) {
-  return (
-    <div className="rounded-2xl border border-muted/20 bg-gradient-to-b from-muted/50 to-muted/30 p-6 backdrop-blur-sm">
-      <div className="flex items-center gap-4">
-        <div className="rounded-xl bg-gradient-to-r from-blue-500 to-violet-500 p-3">
-          {icon}
-        </div>
-        <div>
-          <p className="text-sm text-muted-foreground">{label}</p>
-          <p className="text-2xl font-bold">{value}</p>
-        </div>
-      </div>
     </div>
   );
 }
