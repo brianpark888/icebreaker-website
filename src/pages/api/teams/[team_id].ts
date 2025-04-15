@@ -1,7 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { supabase } from "@/lib/supabase";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
   const { team_id } = req.query;
 
   if (req.method !== "GET") {
@@ -32,16 +35,42 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     if (memberError) throw memberError;
 
-    // 3. Get games linked to the team
+    // 3. Get games linked to the team along with the participants (via the game_participants table)
     const { data: games, error: gameError } = await supabase
       .from("game_sessions")
-      .select("id, game_name, game_type, game_settings, status, creator_username, created_at")
+      .select(
+        "id, game_name, game_type, is_single_player, game_size, status, creator_username, created_at",
+      )
       .eq("team_id", team_id);
 
     if (gameError) throw gameError;
 
-    return res.status(200).json({ team, members, games });
+    // 4. Get the number of participants per game using game_participants
+    const gamesWithParticipantsCount = await Promise.all(
+      games.map(async (game) => {
+        // Fetch participants for each game session
+        const { count, error: participantsError } = await supabase
+          .from("game_participants")
+          .select("user_id", { count: "exact" })
+          .eq("game_session_id", game.id); // Match by game_session_id
+
+        if (participantsError) {
+          return res.status(500).json({ detail: participantsError.message });
+        }
+
+        return {
+          ...game,
+          participants_count: count,
+        };
+      }),
+    );
+
+    return res
+      .status(200)
+      .json({ team, members, games: gamesWithParticipantsCount });
   } catch (err: any) {
-    return res.status(500).json({ detail: err.message || "Unexpected server error" });
+    return res
+      .status(500)
+      .json({ detail: err.message || "Unexpected server error" });
   }
 }
