@@ -186,7 +186,12 @@
                 "SetGameSize",
                 data.game.game_size,
               );
-              MyGameInstance.SendMessage("Instance", "SetTeamId", teamId);
+              console.log(`teamid: ${typeof teamId}`);
+              MyGameInstance.SendMessage(
+                "Instance",
+                "SetTeamSessionId",
+                teamId,
+              );
 
               fullscreenButton.onclick = () => {
                 unityInstance.SetFullscreen(1);
