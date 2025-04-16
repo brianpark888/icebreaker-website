@@ -119,12 +119,18 @@ export default function TeamPage() {
           <div className="grid gap-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <Button
-                  className="bg-transparent"
+                {/* <Button
+                    className="bg-transparent"
+                    onClick={() => router.push("/teams")}
+                  >
+                    <ArrowLeft className="h-4 w-4" />
+                  </Button> */}
+                <button
                   onClick={() => router.push("/teams")}
+                  className="flex items-center justify-center rounded-lg p-1 transition-colors duration-200 ease-in-out hover:bg-muted/20"
                 >
                   <ArrowLeft className="h-4 w-4" />
-                </Button>
+                </button>
                 <h1 className="text-gradient text-3xl font-bold">
                   {team.team_name} Dashboard
                 </h1>
@@ -242,10 +248,10 @@ export default function TeamPage() {
                 </div>
 
                 {games?.length === 0 ? (
-                  <div className="py-8 text-center text-muted-foreground">
+                  <div className="flex flex-col items-center py-8 text-center text-muted-foreground">
                     <p className="text-sm">No games created yet</p>
                     <Button
-                      className="mt-4"
+                      className="mt-4 text-white"
                       onClick={() => setIsModalOpen(true)}
                     >
                       Start a Game
