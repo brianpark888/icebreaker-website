@@ -31,7 +31,7 @@ export default async function handler(
     const { data: members, error: memberError } = await supabase
       .from("team_members")
       .select(
-        `id, user_id, username, joined_at, role, leadership_score, users(imgUrl)`,
+        `id, user_id, username, joined_at, role, leadership_score, users(imgUrl,name)`,
       )
       .eq("team_id", team_id);
 
