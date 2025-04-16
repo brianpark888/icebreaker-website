@@ -30,7 +30,9 @@ export default async function handler(
     // 2. Get team members
     const { data: members, error: memberError } = await supabase
       .from("team_members")
-      .select("id, user_id, username, joined_at, role, leadership_score")
+      .select(
+        `id, user_id, username, joined_at, role, leadership_score, users(imgUrl)`,
+      )
       .eq("team_id", team_id);
 
     if (memberError) throw memberError;
