@@ -257,7 +257,7 @@ export default function TeamPage() {
                       className="flex items-center gap-4 rounded-lg bg-muted/30 p-4"
                     >
                       <Image
-                        src={`/placeholder.svg?height=40&width=40&text=${member.username?.charAt(0) || "U"}`}
+                        src={member.users.imgUrl}
                         alt={member.username}
                         width={40}
                         height={40}
