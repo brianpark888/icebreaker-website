@@ -116,6 +116,7 @@
       let username;
       let gameId;
       let data;
+      let teamId;
 
       // Let parent know you're ready to receive data
       window.parent.postMessage({ type: "iframe-ready" }, "*");
@@ -125,6 +126,7 @@
           if (event.data.username && event.data.gameId) {
             username = event.data.username;
             gameId = event.data.gameId;
+            teamId = event.data.teamId;
             resolve(); // Only resolves when we get the data
           }
         });
@@ -184,11 +186,7 @@
                 "SetGameSize",
                 data.game.game_size,
               );
-              MyGameInstance.SendMessage(
-                "Instance",
-                "SetTeamId",
-                data.game.team_id,
-              );
+              MyGameInstance.SendMessage("Instance", "SetTeamId", teamId);
 
               fullscreenButton.onclick = () => {
                 unityInstance.SetFullscreen(1);
@@ -228,7 +226,7 @@
 
           const result = await response.json();
           console.log("Update successful:", result);
-          window.location.href = `teams/${data.game.team_id}`;
+          window.location.href = `teams/${teamId}`;
         } catch (error) {
           console.error("Error updating winner:", error);
         }
