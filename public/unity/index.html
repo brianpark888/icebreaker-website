@@ -172,7 +172,7 @@
               MyGameInstance.SendMessage(
                 "Instance",
                 "SetProfileName",
-                username,
+                data.users.name,
               );
               MyGameInstance.SendMessage(
                 "Instance",
@@ -217,6 +217,7 @@
 
           const result = await response.json();
           console.log("Update successful:", result);
+          window.location.href = `teams/${data.game.team_id}`;
         } catch (error) {
           console.error("Error updating winner:", error);
         }
