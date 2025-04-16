@@ -184,6 +184,11 @@
                 "SetGameSize",
                 data.game.game_size,
               );
+              MyGameInstance.SendMessage(
+                "Instance",
+                "SetTeamId",
+                data.game.team_id,
+              );
 
               fullscreenButton.onclick = () => {
                 unityInstance.SetFullscreen(1);
@@ -197,7 +202,13 @@
         document.body.appendChild(script);
       }
 
-      async function UpdateWinner(first, second, third) {
+      async function UpdateWinner(
+        first,
+        second,
+        third,
+        team_id,
+        game_session_id,
+      ) {
         try {
           const response = await fetch("/api/games/end", {
             method: "POST",
@@ -206,8 +217,8 @@
             },
             body: JSON.stringify({
               usernames: [first, second, third],
-              team_id: data.game.team_id,
-              game_session_id: data.game.game_session_id,
+              team_id: team_id,
+              game_session_id: game_session_id,
             }),
           });
 
