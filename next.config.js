@@ -17,6 +17,12 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
+
+  // 👇 Add this block
+  images: {
+    domains: ["i.imgur.com"],
+  },
+
   transpilePackages: ["geist"],
 };
 
