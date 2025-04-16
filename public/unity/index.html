@@ -198,25 +198,28 @@
       }
 
       async function UpdateWinner(first, second, third) {
-        console.log("Calling the html code to update database");
-        console.log(first + second + third);
+        try {
+          const response = await fetch("/api/games/end", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              usernames: [first, second, third],
+              team_id: data.game.team_id,
+              game_session_id: data.game.game_session_id,
+            }),
+          });
 
-        // TODO: Make endpoint for updating who won
+          if (!response.ok) {
+            throw new Error(`Failed to update winner: ${response.statusText}`);
+          }
 
-        /*
-        const AUTH_SUPABASE_URL = "https://lahdueuocnmtamgybroa.supabase.co";
-        const AUTH_SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxhaGR1ZXVvY25tdGFtZ3licm9hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDExNjUxMDIsImV4cCI6MjA1Njc0MTEwMn0.X-CgPM3SZ8bHwzU764d8xFC3W9kU0ktYAjpmi5enfX8";
-        
-        playerID = str
-        const { createClient } = supabase;
-        
-        const _supabase = createClient(AUTH_SUPABASE_URL, AUTH_SUPABASE_KEY);
-
-        const { data, error } = await _supabase
-        .from('team_members')
-        .update('leadership_score', leadership + 1)
-        .eq('username', playerID)
-        */
+          const result = await response.json();
+          console.log("Update successful:", result);
+        } catch (error) {
+          console.error("Error updating winner:", error);
+        }
       }
     </script>
   </body>
