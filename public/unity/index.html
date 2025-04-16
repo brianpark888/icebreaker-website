@@ -115,6 +115,7 @@
 
       let username;
       let gameId;
+      let data;
 
       // Let parent know you're ready to receive data
       window.parent.postMessage({ type: "iframe-ready" }, "*");
@@ -133,8 +134,7 @@
         console.log("Calling API...");
         try {
           const res = await fetch(`/api/games/${gameId}`);
-          const data = await res.json();
-          console.log("API response:", data);
+          data = await res.json();
         } catch (err) {
           console.error("API call failed:", err);
         }
@@ -158,10 +158,6 @@
               loadingBar.style.display = "none";
               await waitForMessage;
               await callApi();
-              // gameId = "test123";
-              // username = "Seung"
-              console.log(gameId);
-              console.log(username);
               MyGameInstance = unityInstance;
               MyGameInstance.SendMessage("Instance", "JoinLobby", gameId);
               MyGameInstance.SendMessage(
@@ -173,6 +169,11 @@
                 "Instance",
                 "SetProfilePicture",
                 playerProfile,
+              );
+              MyGameInstance.SendMessage(
+                "Instance",
+                "SetGameSize",
+                data.game.game_size,
               );
 
               fullscreenButton.onclick = () => {
