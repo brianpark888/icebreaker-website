@@ -8,6 +8,8 @@ import {
   Clock,
   Play,
   ChartColumnDecreasing,
+  Gamepad,
+  Gamepad2,
 } from "lucide-react";
 import Button from "@/components/ui/Button";
 import Image from "next/image";
@@ -187,7 +189,7 @@ export default function TeamPage() {
               <div className="rounded-2xl border border-muted/20 bg-gradient-to-b from-muted/50 to-muted/30 p-6 backdrop-blur-sm">
                 <div className="flex items-center gap-4">
                   <div className="rounded-xl bg-gradient-to-r from-blue-500 to-violet-500 p-3">
-                    <Trophy className="h-5 w-5 text-white" />
+                    <Gamepad2 className="h-5 w-5 text-white" />
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">
@@ -289,7 +291,7 @@ export default function TeamPage() {
                             className="h-8 rounded-full px-3 text-xs"
                             onClick={() => joinGame(game.id)}
                           >
-                            Join Game
+                            Join
                           </Button>
                         </div>
 
