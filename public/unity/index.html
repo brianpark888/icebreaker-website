@@ -133,7 +133,16 @@
       async function callApi() {
         console.log("Calling API...");
         try {
-          const res = await fetch(`/api/games/${gameId}`);
+          const res = await fetch(
+            `/api/games/${gameId}?username=${encodeURIComponent(username)}`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            },
+          );
+
           data = await res.json();
         } catch (err) {
           console.error("API call failed:", err);
@@ -168,7 +177,7 @@
               MyGameInstance.SendMessage(
                 "Instance",
                 "SetProfilePicture",
-                playerProfile,
+                data.users.imgUrl,
               );
               MyGameInstance.SendMessage(
                 "Instance",

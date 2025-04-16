@@ -12,6 +12,12 @@ export default async function handler(
     return res.status(405).json({ detail: "Method Not Allowed" });
   }
 
+  const { username } = req.query;
+
+  if (!username || typeof username !== "string") {
+    return res.status(400).json({ detail: "Invalid or missing username" });
+  }
+
   // Ensure valid game_id parameter
   if (!game_id || typeof game_id !== "string") {
     return res.status(400).json({ detail: "Invalid game_id" });
@@ -43,8 +49,9 @@ export default async function handler(
     const { data: users, error: usersError } = await supabase
       .from("users")
       .select("id, name, imgUrl")
-      .in("id", userIds);
-
+      .in("id", userIds)
+      .eq("username", username); // Ensure the username belongs to the correct team
+    console.log("users: ", users, usersError);
     if (usersError) throw usersError;
 
     // Return final combined data
@@ -55,7 +62,7 @@ export default async function handler(
         single_player: gameSession.is_single_player,
         game_size: gameSession.game_size,
       },
-      users: users || [],
+      users: users[0] || [],
       teamMembers: teamMemberRecords || [],
     };
 
