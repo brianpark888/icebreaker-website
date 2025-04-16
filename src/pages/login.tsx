@@ -18,12 +18,15 @@ export default function AuthPage() {
 
     const form = e.currentTarget;
     const email = (form.elements.namedItem("email") as HTMLInputElement)?.value;
-    const username = (form.elements.namedItem("username") as HTMLInputElement)?.value;
-    const password = (form.elements.namedItem("password") as HTMLInputElement)?.value;
+    const username = (form.elements.namedItem("username") as HTMLInputElement)
+      ?.value;
+    const password = (form.elements.namedItem("password") as HTMLInputElement)
+      ?.value;
     const name = (form.elements.namedItem("name") as HTMLInputElement)?.value;
 
     try {
-      const url = mode === "register" ? "/api/auth/register" : "/api/auth/login";
+      const url =
+        mode === "register" ? "/api/auth/register" : "/api/auth/login";
       const payload =
         mode === "register"
           ? { email, password, name, username }
@@ -39,13 +42,12 @@ export default function AuthPage() {
       if (!res.ok) throw new Error(data.error || "Something went wrong");
       localStorage.setItem("username", data.user.username || username); // use backend username if returned
       localStorage.setItem("user_id", data.user.id); // assuming `id` is returned from the API
-      
+
       if (mode === "register") {
-        router.push("/team-setup");
+        router.push("/profile-setup");
       } else {
         router.push("/teams");
       }
-      
     } catch (err: any) {
       setError(err.message || "An error occurred");
     } finally {
@@ -65,7 +67,7 @@ export default function AuthPage() {
 
             <div className="flex justify-center space-x-2 text-sm">
               <button
-                className={`px-3 py-1 rounded ${
+                className={`rounded px-3 py-1 ${
                   mode === "login" ? "bg-primary text-white" : "bg-muted"
                 }`}
                 onClick={() => setMode("login")}
@@ -73,7 +75,7 @@ export default function AuthPage() {
                 Login
               </button>
               <button
-                className={`px-3 py-1 rounded ${
+                className={`rounded px-3 py-1 ${
                   mode === "register" ? "bg-primary text-white" : "bg-muted"
                 }`}
                 onClick={() => setMode("register")}
@@ -89,7 +91,10 @@ export default function AuthPage() {
                 {mode === "register" && (
                   <>
                     <div className="space-y-2">
-                      <label htmlFor="name" className="block text-sm font-medium">
+                      <label
+                        htmlFor="name"
+                        className="block text-sm font-medium"
+                      >
                         Name
                       </label>
                       <input
@@ -102,7 +107,10 @@ export default function AuthPage() {
                     </div>
 
                     <div className="space-y-2">
-                      <label htmlFor="email" className="block text-sm font-medium">
+                      <label
+                        htmlFor="email"
+                        className="block text-sm font-medium"
+                      >
                         Email
                       </label>
                       <input
@@ -117,7 +125,10 @@ export default function AuthPage() {
                 )}
 
                 <div className="space-y-2">
-                  <label htmlFor="username" className="block text-sm font-medium">
+                  <label
+                    htmlFor="username"
+                    className="block text-sm font-medium"
+                  >
                     Username
                   </label>
                   <input
@@ -130,7 +141,10 @@ export default function AuthPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <label htmlFor="password" className="block text-sm font-medium">
+                  <label
+                    htmlFor="password"
+                    className="block text-sm font-medium"
+                  >
                     Password
                   </label>
                   <input
@@ -154,8 +168,8 @@ export default function AuthPage() {
                       ? "Signing in..."
                       : "Creating account..."
                     : mode === "login"
-                    ? "Sign in"
-                    : "Register"}
+                      ? "Sign in"
+                      : "Register"}
                 </Button>
               </form>
             </div>
