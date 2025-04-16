@@ -1,32 +1,38 @@
-"use client"
+"use client";
 
-import React, { useState } from "react"
-import Button from "@/components/ui/Button"
+import React, { useState } from "react";
+import Button from "@/components/ui/Button";
 
 interface InviteMembersModalProps {
-  isOpen: boolean
-  onClose: () => void
-  teamId: string
+  isOpen: boolean;
+  onClose: () => void;
+  teamId: string;
 }
 
-const InviteMembersModal: React.FC<InviteMembersModalProps> = ({ isOpen, onClose, teamId }) => {
-  const [copied, setCopied] = useState(false)
+const InviteMembersModal: React.FC<InviteMembersModalProps> = ({
+  isOpen,
+  onClose,
+  teamId,
+}) => {
+  const [copied, setCopied] = useState(false);
 
-  const inviteLink = `${teamId}`
+  const inviteLink = `${teamId}`;
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(inviteLink)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1500)
-  }
+    navigator.clipboard.writeText(inviteLink);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
 
-  if (!isOpen) return null
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-      <div className="w-full max-w-md rounded-2xl bg-gradient-to-b from-muted/50 to-muted/30 p-6 border border-muted/20 shadow-xl">
-        <h2 className="text-2xl font-bold text-foreground mb-2">Invite Team Members</h2>
-        <p className="text-muted-foreground text-sm mb-4">
+      <div className="w-full max-w-md rounded-2xl border border-muted/20 bg-gradient-to-b from-muted/50 to-muted/30 p-6 shadow-xl">
+        <h2 className="mb-2 text-2xl font-bold text-foreground">
+          Invite Team Members
+        </h2>
+        <p className="mb-4 text-sm text-muted-foreground">
           Share this code to let others join your team.
         </p>
 
@@ -39,22 +45,27 @@ const InviteMembersModal: React.FC<InviteMembersModalProps> = ({ isOpen, onClose
           />
         </div>
 
-        {copied && <p className="text-green-600 text-sm mb-2">Copied to clipboard!</p>}
+        {copied && (
+          <p className="mb-2 text-sm text-green-600">Copied to clipboard!</p>
+        )}
 
         <div className="flex justify-end gap-3">
-          <Button onClick={handleCopy} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 text-sm">
+          <Button
+            onClick={handleCopy}
+            className="bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700"
+          >
             Copy Link
           </Button>
           <button
             onClick={onClose}
-            className="rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-800 transition px-4 py-2 text-sm"
+            className="rounded-2xl bg-gray-200 px-4 py-2 text-sm text-gray-800 transition hover:bg-gray-300"
           >
             Close
           </button>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default InviteMembersModal
+export default InviteMembersModal;
