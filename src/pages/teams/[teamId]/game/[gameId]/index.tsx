@@ -12,7 +12,7 @@ export default function GamePage() {
     const handleIframeReady = (event: MessageEvent) => {
       if (event.data?.type === "iframe-ready") {
         const username = localStorage.getItem("username");
-        const message = { username, gameId };
+        const message = { username, teamId, gameId };
 
         // ✅ Now the iframe is ready — send it the message
         iframeRef.current?.contentWindow?.postMessage(message, "*");
