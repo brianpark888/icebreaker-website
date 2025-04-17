@@ -265,7 +265,7 @@ export default function TeamPage() {
                     .map((game) => (
                       <div
                         key={game.id}
-                        className="rounded-xl border border-muted/20 bg-muted/30 p-5 transition hover:shadow-md"
+                        className="mt-2 rounded-xl border border-muted/20 bg-muted/30 p-5 transition hover:bg-muted/90 hover:shadow-md"
                       >
                         <div className="mb-2 flex items-start justify-between">
                           <div className="flex items-start gap-3">
@@ -334,7 +334,12 @@ export default function TeamPage() {
                   {members.map((member, i) => (
                     <div
                       key={i}
-                      className="flex items-center gap-4 rounded-lg bg-muted/30 p-4"
+                      className="flex cursor-pointer items-center gap-4 rounded-lg bg-muted/30 p-4 transition hover:bg-muted/90"
+                      onClick={() => {
+                        router.push(
+                          `/teams/${teamId}/profile/${member.username}`,
+                        );
+                      }}
                     >
                       <Image
                         src={member.users.imgUrl}
