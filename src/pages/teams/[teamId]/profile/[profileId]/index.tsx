@@ -32,96 +32,90 @@ export default function ProfilePage() {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [toastType, setToastType] = useState<"success" | "error" | null>(null);
   const [hasSubmitted, setHasSubmitted] = useState(false);
+  const fetchMe = async (teamId: string) => {
+    const username = localStorage.getItem("username");
+    const res = await fetch(`/api/user/${username}?teamId=${teamId}`);
+    const { user } = await res.json();
+    if (!res.ok) throw new Error("failed to fetch me");
+    setMyData(user);
+    return user;
+  };
 
-  /* …existing code… */
+  const fetchProfile = async (profileId: string, teamId: string) => {
+    const res = await fetch(`/api/user/${profileId}?teamId=${teamId}`);
+    const { user } = await res.json();
+    if (!res.ok) throw new Error("failed to fetch profile");
+    setUser(user);
+    return user;
+  };
 
-  // ⬇️ new effect — fires once both records are in state
-  useEffect(() => {
-    if (!myData?.id || !user?.id) return;
+  const checkAlreadyAnswered = async (myId: string, profileId: string) => {
+    const [id1, id2] = [myId, profileId].sort();
+    const res = await fetch(
+      `/api/team-members/check-truth-lie?myId=${id1}&profileId=${id2}`,
+    );
+    const data = await res.json();
+    if (!res.ok) throw new Error("status check failed");
 
-    // 🔒 pair was stored in sorted order, so sort before querying
-    const [id1, id2] = [myData.id, user.id].sort();
-
-    const checkAlreadyAnswered = async () => {
-      try {
-        const res = await fetch(
-          `/api/team-members/check-truth-lie?myId=${id1}&profileId=${id2}`,
+    if (data.exists) {
+      setHasSubmitted(true);
+      if (data.correct !== null) {
+        setToastMessage(
+          data.correct
+            ? "You’ve already guessed correctly! 🎉"
+            : "You’ve already guessed, and it was incorrect.",
         );
-        const data = await res.json();
-
-        if (res.ok && data.exists) {
-          // they already answered → lock the UI
-          setHasSubmitted(true);
-
-          // (optional) surface their previous result
-          if (data.correct !== null) {
-            setToastMessage(
-              data.correct
-                ? "You’ve already guessed correctly! 🎉"
-                : "You’ve already guessed, and it was incorrect.",
-            );
-            setToastType(data.correct ? "success" : "error");
-          }
-        }
-      } catch (err) {
-        console.error("Error checking Two‑Truths‑&‑Lie status:", err);
+        setToastType(data.correct ? "success" : "error");
       }
-    };
-
-    checkAlreadyAnswered();
-  }, [myData, user]);
-
-  useEffect(() => {
-    if (user?.two_truths_and_lie) {
-      const { truth1, truth2, lie } = user.two_truths_and_lie;
-
-      const statements = [
-        { text: truth1, isLie: false },
-        { text: truth2, isLie: false },
-        { text: lie, isLie: true },
-      ];
-
-      setShuffledStatements(statements.sort(() => Math.random() - 0.5));
     }
-  }, [user]);
+  };
 
+  /* ---------- master effect: run them in order ---------- */
   useEffect(() => {
-    const fetchMyData = async () => {
-      try {
-        const res = await fetch(
-          `/api/user/${localStorage.getItem("username")}?teamId=${teamId}`,
-        );
-        const data = await res.json();
-        setMyData(data.user);
-        if (res.ok) {
-          console.log("My data:", data);
-        } else {
-          console.error("Failed to fetch my data", data.detail);
-        }
-      } catch (err) {
-        console.error("Error fetching my data:", err);
-      }
-    };
-    if (teamId) fetchMyData();
-    const fetchUserData = async () => {
-      try {
-        const res = await fetch(`/api/user/${profileId}?teamId=${teamId}`);
-        const data = await res.json();
+    const safeTeamId =
+      typeof teamId === "string"
+        ? teamId
+        : Array.isArray(teamId)
+          ? teamId[0]
+          : undefined; // undefined if missing
 
-        if (res.ok) {
-          setUser(data.user);
-        } else {
-          console.error("Failed to load user", data.detail);
-        }
+    const safeProfileId =
+      typeof profileId === "string"
+        ? profileId
+        : Array.isArray(profileId)
+          ? profileId[0]
+          : undefined;
+
+    if (!safeTeamId || !safeProfileId) return; // still guard for undefined
+
+    const run = async () => {
+      setLoading(true);
+      try {
+        const me = await fetchMe(safeTeamId);
+        const prof = await fetchProfile(safeProfileId, safeTeamId);
+        await checkAlreadyAnswered(me.id, prof.id);
       } catch (err) {
-        console.error("Error fetching user:", err);
+        console.error(err);
       } finally {
         setLoading(false);
       }
     };
 
-    if (profileId && teamId) fetchUserData();
-  }, [profileId, teamId]);
+    run();
+  }, [teamId, profileId]);
+
+  /* ---------- shuffle statements once profile is set ---------- */
+  useEffect(() => {
+    if (!user?.two_truths_and_lie) return;
+    const { truth1, truth2, lie } = user.two_truths_and_lie;
+    setShuffledStatements(
+      [
+        { text: truth1, isLie: false },
+        { text: truth2, isLie: false },
+        { text: lie, isLie: true },
+      ].sort(() => Math.random() - 0.5),
+    );
+  }, [user]);
 
   if (loading) {
     return (
@@ -225,25 +219,12 @@ export default function ProfilePage() {
               </div>
             </div>
 
-            {/* Bio Section */}
-            {/* <div className="rounded-2xl border border-muted/20 bg-gradient-to-b from-muted/50 to-muted/30 p-6 backdrop-blur-sm">
-              <h2 className="mb-4 text-xl font-semibold">Bio</h2>
-              <div className="rounded-xl bg-muted/30 p-5">
-                <p className="text-muted-foreground">
-                  {user.bio ||
-                    `${user.username} is a valued member of the team with expertise in leadership and collaboration. 
-                    They have participated in ${games.length} games and contributed significantly to team activities.
-                    Their leadership style focuses on empowering team members and driving results through effective communication.`}
-                </p>
-              </div>
-            </div> */}
-
             {user.two_truths_and_lie && (
               <div className="rounded-2xl border border-muted/20 bg-gradient-to-b from-muted/50 to-muted/30 p-6 backdrop-blur-sm">
                 <h2 className="mb-4 text-xl font-semibold">
                   Two Truths and a Lie
                 </h2>
-                <div className="grid grid-cols-1 gap-4">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                   {shuffledStatements.map((statement, index) => (
                     <div
                       key={index}
@@ -328,32 +309,40 @@ export default function ProfilePage() {
               </div>
             )}
 
-            {/* {user.promptResponse?.q ? (
+            {/* Bio Section */}
+            {hasSubmitted && (
               <div className="rounded-2xl border border-muted/20 bg-gradient-to-b from-muted/50 to-muted/30 p-6 backdrop-blur-sm">
-                <h2 className="mb-4 text-xl font-semibold">
-                  {user.promptResponse.q}
-                </h2>
+                <h2 className="mb-4 text-xl font-semibold">Bio</h2>
                 <div className="rounded-xl bg-muted/30 p-5">
-                  <p className="text-muted-foreground">
-                    {user.promptResponse.a ||
-                      `${user.username} is a valued member of the team with expertise in leadership and collaboration. 
-                    They have participated in ${games.length} games and contributed significantly to team activities.
-                    Their leadership style focuses on empowering team members and driving results through effective communication.`}
-                  </p>
+                  <p className="text-muted-foreground">{user.bio}</p>
                 </div>
               </div>
-            ) : (
-              <div className="rounded-2xl border border-muted/20 bg-gradient-to-b from-muted/50 to-muted/30 p-6 backdrop-blur-sm">
-                <h2 className="mb-4 text-xl font-semibold">
-                  No Prompt Response Found
-                </h2>
-                <div className="rounded-xl bg-muted/30 p-5">
-                  <p className="text-muted-foreground">
-                    {user.username} has not provided a prompt response yet.
-                  </p>
+            )}
+
+            {hasSubmitted &&
+              (user.promptResponse?.q ? (
+                <div className="rounded-2xl border border-muted/20 bg-gradient-to-b from-muted/50 to-muted/30 p-6 backdrop-blur-sm">
+                  <h2 className="mb-4 text-xl font-semibold">
+                    {user.promptResponse.q}
+                  </h2>
+                  <div className="rounded-xl bg-muted/30 p-5">
+                    <p className="text-muted-foreground">
+                      {user.promptResponse.a}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            )} */}
+              ) : (
+                <div className="rounded-2xl border border-muted/20 bg-gradient-to-b from-muted/50 to-muted/30 p-6 backdrop-blur-sm">
+                  <h2 className="mb-4 text-xl font-semibold">
+                    No Prompt Response Found
+                  </h2>
+                  <div className="rounded-xl bg-muted/30 p-5">
+                    <p className="text-muted-foreground">
+                      {user.username} has not provided a prompt response yet.
+                    </p>
+                  </div>
+                </div>
+              ))}
           </div>
         </div>
       </main>

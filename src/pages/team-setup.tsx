@@ -14,8 +14,7 @@ export default function TeamSetup() {
   const handleCreateTeam = async (e: React.FormEvent) => {
     e.preventDefault();
     const user_id = localStorage.getItem("user_id");
-    const username= localStorage.getItem("username");
-  
+    const username = localStorage.getItem("username");
 
     const res = await fetch("/api/teams", {
       method: "POST",
@@ -26,7 +25,7 @@ export default function TeamSetup() {
         test: true,
         test_user: {
           id: Number(user_id),
-          username: username
+          username: username,
         },
       }),
     });
@@ -44,16 +43,16 @@ export default function TeamSetup() {
     setLoading(true);
     setError("");
     setSuccess("");
-  
+
     const user_id = localStorage.getItem("user_id");
     const username = localStorage.getItem("username");
-  
+
     if (!user_id || !username) {
       setError("User not logged in");
       setLoading(false);
       return;
     }
-  
+
     try {
       const res = await fetch(`/api/teams/join`, {
         method: "POST",
@@ -67,16 +66,16 @@ export default function TeamSetup() {
           },
         }),
       });
-  
+
       const data = await res.json();
       if (!res.ok) {
         throw new Error(data.detail || "Failed to join team");
       }
-  
+
       if (data.team_id) {
-        window.location.href = `/teams/${data.team_id}`;
+        window.location.href = `/teams/${data.team_id}/join-setup`;
       }
-  
+
       setTimeout(() => {
         setSuccess("");
       }, 1500);
@@ -86,30 +85,34 @@ export default function TeamSetup() {
       setLoading(false);
     }
   };
-  
+
   return (
-    <div className="flex flex-col gap-10 h-screen bg-background p-8 items-center justify-center">
-      <div className="flex h-16 items-center gap-2 px-6 border-b border-muted/20">
-        <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-violet-500" />
+    <div className="flex h-screen flex-col items-center justify-center gap-10 bg-background p-8">
+      <div className="flex h-16 items-center gap-2 border-b border-muted/20 px-6">
+        <div className="h-8 w-8 rounded-full bg-gradient-to-r from-blue-500 to-violet-500" />
         <span className="font-semibold">Icebreakers</span>
       </div>
 
       <h1 className="text-4xl font-bold">Team Setup</h1>
-      <div className="max-w-3xl w-full grid gap-8 md:grid-cols-2">
+      <div className="grid w-full max-w-3xl gap-8 md:grid-cols-2">
         {/* Create Team Card */}
-        <div className="p-6 rounded-2xl bg-muted/10 backdrop-blur-md border border-muted/20 shadow-lg">
+        <div className="rounded-2xl border border-muted/20 bg-muted/10 p-6 shadow-lg backdrop-blur-md">
           <h2 className="flex items-center gap-2 text-xl font-semibold">
-            <Plus className="w-5 h-5" /> Create a Team
+            <Plus className="h-5 w-5" /> Create a Team
           </h2>
-          <p className="text-muted-foreground mb-4">Start a new team and invite your colleagues</p>
+          <p className="mb-4 text-muted-foreground">
+            Start a new team and invite your colleagues
+          </p>
           <form onSubmit={handleCreateTeam} className="space-y-4">
             <div>
-              <label htmlFor="teamName" className="block text-sm font-medium">Team Name</label>
+              <label htmlFor="teamName" className="block text-sm font-medium">
+                Team Name
+              </label>
               <input
                 id="teamName"
                 placeholder="Enter team name"
                 required
-                className="w-full p-2 border rounded bg-background"
+                className="w-full rounded border bg-background p-2"
                 value={teamName}
                 onChange={(e) => setTeamName(e.target.value)}
               />
@@ -119,19 +122,23 @@ export default function TeamSetup() {
         </div>
 
         {/* Join Team Card */}
-        <div className="p-6 rounded-2xl bg-muted/10 backdrop-blur-md border hover:bg-muted/5">
+        <div className="rounded-2xl border bg-muted/10 p-6 backdrop-blur-md hover:bg-muted/5">
           <h2 className="flex items-center gap-2 text-xl font-semibold">
-            <UserPlus className="w-5 h-5" /> Join a Team
+            <UserPlus className="h-5 w-5" /> Join a Team
           </h2>
-          <p className="text-muted-foreground mb-4">Join an existing team using an invite code</p>
+          <p className="mb-4 text-muted-foreground">
+            Join an existing team using an invite code
+          </p>
           <form onSubmit={handleJoinTeam} className="space-y-4">
             <div>
-              <label htmlFor="inviteCode" className="block text-sm font-medium">Invite Code</label>
+              <label htmlFor="inviteCode" className="block text-sm font-medium">
+                Invite Code
+              </label>
               <input
                 id="inviteCode"
                 placeholder="Enter invite code"
                 required
-                className="w-full p-2 border rounded bg-background"
+                className="w-full rounded border bg-background p-2"
                 value={inviteCode}
                 onChange={(e) => setInviteCode(e.target.value)}
               />

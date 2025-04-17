@@ -43,11 +43,19 @@ export default async function handler(
     if (teamMemberError || !teamMember) {
       return res.status(404).json({ detail: "Team membership not found" });
     }
+    console.log(teamMember.id);
+    const { data: links, error: linksError } = await supabase
+      .from("team_members_link")
+      .select("*")
+      .eq("member_id_1", teamMember.id);
+
+    console.log(links);
 
     // Merge data
     const mergedUser = {
       ...user,
       ...teamMember,
+      links: links || [],
     };
 
     return res.status(200).json({

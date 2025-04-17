@@ -33,7 +33,8 @@ export default async function handler(
       .select(
         `id, user_id, username, joined_at, role, leadership_score, users(imgUrl,name)`,
       )
-      .eq("team_id", team_id);
+      .eq("team_id", team_id)
+      .order("leadership_score", { ascending: false });
 
     if (memberError) throw memberError;
 
