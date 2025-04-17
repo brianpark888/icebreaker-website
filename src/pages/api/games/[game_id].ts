@@ -38,7 +38,7 @@ export default async function handler(
     // 2. Get all user_ids of team members from the team_id found in gameSession
     const { data: teamMemberRecords, error: teamMemberError } = await supabase
       .from("team_members")
-      .select("user_id, bio, leadership_score, two_truths_and_lie")
+      .select("user_id, leadership_score, two_truths_and_lie")
       .eq("team_id", gameSession.team_id);
 
     if (teamMemberError) throw teamMemberError;
