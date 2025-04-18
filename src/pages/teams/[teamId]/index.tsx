@@ -17,6 +17,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import CreateGameModal from "@/components/ui/CreateGameModal";
 import InviteMembersModal from "@/components/ui/InviteMembersModal";
+import Joyride, { Step } from "react-joyride";
 
 export default function TeamPage() {
   const params = useParams();
@@ -30,6 +31,23 @@ export default function TeamPage() {
   const [inviteOpen, setInviteOpen] = useState(false);
   const [myData, setMyData] = useState<any>(null);
   const [games, setGames] = useState<any[]>([]);
+
+  const [runTutorial, setRunTutorial] = useState(true);
+
+  const steps: Step[] = [
+    {
+      target: "body",
+      placement: "center",
+      content: "Welcome! Lets get you onboarded!",
+      disableBeacon: true,
+    },
+    {
+      target: ".members-count",
+      content:
+        "To see everyones profiles, you need first unlock them. Find and click on your profile first",
+      locale: { next: "OK" },
+    },
+  ];
 
   useEffect(() => {
     const fetchTeamData = async () => {
@@ -134,6 +152,45 @@ export default function TeamPage() {
 
   return (
     <div className="flex h-screen bg-background">
+      {/* React Joyride Component */}
+      <Joyride
+        steps={steps}
+        run={runTutorial}
+        showSkipButton
+        continuous
+        scrollToFirstStep
+        styles={{
+          options: {
+            //primaryColor: "#6366f1", // customize to match your theme
+            arrowColor: "#000000",
+            backgroundColor: "#000000",
+            overlayColor: "rgba(0, 0, 0, 0.5)",
+            primaryColor: "#ffffff",
+            textColor: "#ffffff",
+            spotlightShadow: "0 0 0 2px rgba(255, 255, 255, 0.5)",
+            zIndex: 1000,
+          },
+          buttonNext: {
+            background: "linear-gradient(to right, #3b82f6, #8b5cf6)", // blue-500 to violet-500
+            color: "white",
+            border: "none",
+            borderRadius: "0.375rem", // Tailwind: rounded-md
+            padding: "0.5rem 1rem",
+            fontWeight: "500",
+            boxShadow: "0 2px 6px rgba(0, 0, 0, 0.2)",
+            transition: "opacity 0.3s ease",
+          },
+          buttonBack: {
+            color: "#ccc",
+          },
+          buttonSkip: {
+            color: "#ccc",
+          },
+        }}
+        locale={{
+          last: "OK",
+        }}
+      />
       <main className="flex-1 overflow-auto">
         <div className="p-8">
           <div className="grid gap-6">
@@ -347,8 +404,10 @@ export default function TeamPage() {
 
               {/* Members */}
               <div className="rounded-2xl border border-muted/20 bg-gradient-to-b from-muted/50 to-muted/30 p-6 backdrop-blur-sm">
-                <h2 className="mb-4 text-xl font-semibold">Team Members</h2>
-                <div className="space-y-4">
+                <h2 className="members-count mb-4 text-xl font-semibold">
+                  Team Members
+                </h2>
+                <div className="test space-y-4">
                   {members.map((member, i) => (
                     <div
                       key={i}
