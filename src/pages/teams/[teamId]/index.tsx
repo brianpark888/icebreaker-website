@@ -28,6 +28,7 @@ export default function TeamPage() {
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [inviteOpen, setInviteOpen] = useState(false);
+  const [myData, setMyData] = useState<any>(null);
   const [games, setGames] = useState<any[]>([]);
 
   useEffect(() => {
@@ -55,7 +56,24 @@ export default function TeamPage() {
       }
     };
 
+    const fetchProfile = async (username: string) => {
+      try {
+        const res = await fetch(`/api/user/${username}?teamId=${teamId}`);
+        const data = await res.json();
+        if (res.ok) {
+          setMyData(data.user);
+        } else {
+          console.error("Failed to load profile", data.detail);
+        }
+      } catch (err) {
+        console.error("Error fetching profile:", err);
+      }
+    };
+
     if (teamId) fetchTeamData();
+    if (teamId && localStorage.getItem("username")) {
+      fetchProfile(localStorage.getItem("username") as string);
+    }
   }, [teamId]);
 
   if (loading) {
@@ -265,7 +283,7 @@ export default function TeamPage() {
                     .map((game) => (
                       <div
                         key={game.id}
-                        className="rounded-xl border border-muted/20 bg-muted/30 p-5 transition hover:shadow-md"
+                        className="mt-2 rounded-xl border border-muted/20 bg-muted/30 p-5 transition hover:bg-muted/90 hover:shadow-md"
                       >
                         <div className="mb-2 flex items-start justify-between">
                           <div className="flex items-start gap-3">
@@ -334,7 +352,12 @@ export default function TeamPage() {
                   {members.map((member, i) => (
                     <div
                       key={i}
-                      className="flex items-center gap-4 rounded-lg bg-muted/30 p-4"
+                      className="flex cursor-pointer items-center gap-4 rounded-lg bg-muted/30 p-4 transition hover:bg-muted/90"
+                      onClick={() => {
+                        router.push(
+                          `/teams/${teamId}/profile/${member.username}`,
+                        );
+                      }}
                     >
                       <Image
                         src={member.users.imgUrl}
@@ -345,8 +368,25 @@ export default function TeamPage() {
                       />
                       <div className="flex-1">
                         <p className="font-medium">{member.username}</p>
-                        <p className="text-sm text-muted-foreground">
-                          {member.role}
+                        <p className="text-sm">
+                          <span
+                            className={`cursor-pointer rounded px-1 transition-all duration-150 ${
+                              myData?.links?.some(
+                                (obj: {
+                                  member_id_2: string;
+                                  two_truths_and_a_lie_correct: boolean | null;
+                                }) =>
+                                  obj.member_id_2 === member.id &&
+                                  obj.two_truths_and_a_lie_correct !== null,
+                              )
+                                ? /* answered → show normally */
+                                  "text-muted-foreground"
+                                : /* not answered → spoiler */
+                                  "bg-muted-foreground text-transparent hover:text-muted-foreground focus:text-muted-foreground"
+                            }`}
+                          >
+                            {member.role}
+                          </span>
                         </p>
                       </div>
                       <div className="flex items-center gap-2">
