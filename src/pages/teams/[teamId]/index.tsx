@@ -79,6 +79,9 @@ export default function TeamPage() {
         const res = await fetch(`/api/user/${username}?teamId=${teamId}`);
         const data = await res.json();
         if (res.ok) {
+          if (data.user.has_finished_onboarding) {
+            setRunTutorial(false);
+          }
           setMyData(data.user);
         } else {
           console.error("Failed to load profile", data.detail);
