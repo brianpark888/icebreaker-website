@@ -36,7 +36,28 @@ export default function TeamPage() {
   const [runTutorial, setRunTutorial] = useState(true);
 
   const handleTutorialComplete = async () => {
-    //do something
+    try {
+      const response = await fetch("/api/team-members/finish-tutorial", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_id: localStorage.getItem("user_id"),
+          teamId,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        console.error("Error updating onboarding:", data.error);
+      } else {
+        console.log("Success:", data.message);
+      }
+    } catch (error) {
+      console.error("Unexpected error:", error);
+    }
   };
 
   useEffect(() => {
@@ -64,6 +85,7 @@ export default function TeamPage() {
           content:
             "Great! Now you can see your job title. Now do the same for the rest of your teammates and learn more about them! Have fun!",
           locale: { next: "OK" },
+          disableBeacon: true,
         },
       ]);
     } else {
@@ -183,7 +205,10 @@ export default function TeamPage() {
         continuous
         scrollToFirstStep
         callback={(data) => {
-          if (data.status === "finished" || data.status === "skipped") {
+          if (
+            (data.status === "finished" || data.status === "skipped") &&
+            myData?.onboarding_stage === 1
+          ) {
             handleTutorialComplete();
             setRunTutorial(false); // Optional: prevent future runs
           }
