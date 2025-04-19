@@ -73,6 +73,7 @@ export default function ProfilePage() {
 
   // Tutorial part 2
 
+  const [stepIndex, setStepIndex] = useState(0);
   const [runTutorial, setRunTutorial] = useState(true);
 
   const steps: Step[] = [
@@ -95,6 +96,45 @@ export default function ProfilePage() {
       locale: { next: "OK" },
     },
   ];
+  const handleJoyrideCallback = (data: any) => {
+    const { action, index, status, type } = data;
+
+    if (status === "skipped" || status === "finished") {
+      setRunTutorial(false);
+      return;
+    }
+
+    // Handle step logic
+    if (type === "step:before") {
+      if (index === 1) {
+        const el = document.querySelector(".success");
+        if (!el) {
+          // Wait until it's visible
+          waitForSuccessElement();
+          return;
+        }
+      }
+    }
+
+    if (type === "step:after") {
+      setStepIndex(index + 1); // Always increment on after
+    }
+
+    if (type === "target:notFound") {
+      setStepIndex(index + 1);
+    }
+  };
+
+  const waitForSuccessElement = () => {
+    const interval = setInterval(() => {
+      const el = document.querySelector(".success");
+      if (el) {
+        clearInterval(interval);
+        setStepIndex(1); // Resume to Step 2
+      }
+    }, 300);
+  };
+  
 
   /* ---------- master effect: run them in order ---------- */
   useEffect(() => {
@@ -170,6 +210,8 @@ export default function ProfilePage() {
       <Joyride
         steps={steps}
         run={runTutorial}
+        stepIndex={stepIndex}
+        callback={handleJoyrideCallback}
         showSkipButton
         continuous
         scrollToFirstStep
