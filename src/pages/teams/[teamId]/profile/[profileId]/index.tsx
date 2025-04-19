@@ -18,6 +18,7 @@ import { set } from "zod";
 import { useCallback } from "react";
 import Joyride, { Step } from "react-joyride";
 import dynamic from "next/dynamic";
+import ScoreAnimation from "@/components/ScoreAnimation";
 
 const ReactConfetti = dynamic(() => import("react-confetti"), {
   ssr: false,
@@ -43,6 +44,8 @@ export default function ProfilePage() {
     width: typeof window !== "undefined" ? window.innerWidth : 0,
     height: typeof window !== "undefined" ? window.innerHeight : 0,
   });
+  const [showScoreAnimation, setShowScoreAnimation] = useState(false);
+  const [currentScore, setCurrentScore] = useState(0);
 
   useEffect(() => {
     const handleResize = () => {
@@ -142,6 +145,7 @@ export default function ProfilePage() {
       try {
         const me = await fetchMe(safeTeamId);
         const prof = await fetchProfile(safeProfileId, safeTeamId);
+        setCurrentScore(prof.leadership_score || 0);
         await checkAlreadyAnswered(me.id, prof.id);
       } catch (err) {
         console.error(err);
@@ -299,9 +303,14 @@ export default function ProfilePage() {
                     <p className="text-sm text-muted-foreground">
                       Leadership Score
                     </p>
-                    <p className="text-2xl font-bold">
-                      {user.leadership_score || 0}
-                    </p>
+                    <div className="flex items-center justify-center gap-2">
+                      <div className="text-2xl font-bold">
+                        {currentScore}
+                      </div>
+                      <div className="relative">
+                        <ScoreAnimation isVisible={showScoreAnimation} />
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -338,6 +347,8 @@ export default function ProfilePage() {
                           (s) => s.text === selectedStatement,
                         );
                         const isCorrect = chosen && chosen.isLie;
+                        const isOwnProfile = myData.id === user.id;
+
                         const body = {
                           myId: myData.id,
                           profileId: user.id,
@@ -366,10 +377,17 @@ export default function ProfilePage() {
                             setToastType(isCorrect ? "success" : "error");
                             setHasSubmitted(true);
                             
-                            // show confetti if correct
+                            // show confetti only after API confirms success
                             if (isCorrect) {
                               setShowConfetti(true);
                               setTimeout(() => setShowConfetti(false), 5000);
+                              
+                              // if it's their own profile and they guessed correctly, show score animation
+                              if (isOwnProfile) {
+                                setShowScoreAnimation(true);
+                                setCurrentScore((prev: number) => prev + 15);
+                                setTimeout(() => setShowScoreAnimation(false), 1500);
+                              }
                             }
                           } else {
                             setToastMessage(
