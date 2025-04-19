@@ -113,7 +113,7 @@ export default function ProfilePage() {
       disableBeacon: true,
     },
     {
-      target: ".success",
+      target: ".correct",
       content:
         "Nice guess! Now you can see your bio and response to the prompts",
       locale: { next: "OK" },
