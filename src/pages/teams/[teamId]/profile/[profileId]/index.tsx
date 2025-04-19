@@ -129,7 +129,7 @@ export default function ProfilePage() {
       locale: { next: "OK" },
     },
     {
-      target: "body",
+      target: ".back-button",
       content: "Click back to go back to the team dashboard",
       locale: { next: "OK" },
     },
@@ -293,7 +293,7 @@ export default function ProfilePage() {
                 onClick={() => router.push(`/teams/${teamId}`)}
                 className="flex items-center justify-center rounded-lg p-1 transition-colors duration-200 ease-in-out hover:bg-muted/20"
               >
-                <ArrowLeft className="h-4 w-4" />
+                <ArrowLeft className="h-4 w-4 back-button" />
               </button>
               <h1 className="text-gradient text-3xl font-bold">
                 {user.username}'s Profile
