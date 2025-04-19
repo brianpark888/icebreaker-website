@@ -17,6 +17,11 @@ import { useEffect, useState } from "react";
 import { set } from "zod";
 import { useCallback } from "react";
 import Joyride, { Step } from "react-joyride";
+import dynamic from "next/dynamic";
+
+const ReactConfetti = dynamic(() => import("react-confetti"), {
+  ssr: false,
+});
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -33,6 +38,24 @@ export default function ProfilePage() {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [toastType, setToastType] = useState<"success" | "error" | null>(null);
   const [hasSubmitted, setHasSubmitted] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false); // state var for confetti
+  const [windowSize, setWindowSize] = useState({ // state var for window size for confetti dimensions 
+    width: typeof window !== "undefined" ? window.innerWidth : 0,
+    height: typeof window !== "undefined" ? window.innerHeight : 0,
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const fetchMe = async (teamId: string) => {
     const username = localStorage.getItem("username");
     const res = await fetch(`/api/user/${username}?teamId=${teamId}`);
@@ -63,8 +86,8 @@ export default function ProfilePage() {
       if (data.correct !== null) {
         setToastMessage(
           data.correct
-            ? "You’ve already guessed correctly! 🎉"
-            : "You’ve already guessed, and it was incorrect.",
+            ? "You've already guessed correctly! 🎉"
+            : "You've already guessed, and it was incorrect.",
         );
         setToastType(data.correct ? "success" : "error");
       }
@@ -342,6 +365,12 @@ export default function ProfilePage() {
                             );
                             setToastType(isCorrect ? "success" : "error");
                             setHasSubmitted(true);
+                            
+                            // show confetti if correct
+                            if (isCorrect) {
+                              setShowConfetti(true);
+                              setTimeout(() => setShowConfetti(false), 5000);
+                            }
                           } else {
                             setToastMessage(
                               "Something went wrong submitting your answer.",
@@ -372,6 +401,28 @@ export default function ProfilePage() {
                   </div>
                 )}
               </div>
+            )}
+
+            {/* confetti firework animation */}
+            {showConfetti && (
+              <ReactConfetti
+                width={windowSize.width}
+                height={windowSize.height}
+                recycle={false}
+                numberOfPieces={200}
+                gravity={0.5}
+                initialVelocityY={30}
+                initialVelocityX={15}
+                confettiSource={{
+                  x: windowSize.width / 2,
+                  y: windowSize.height / 2,
+                  w: 0,
+                  h: 0
+                }}
+                colors={['#FFD700', '#FFA500', '#FF69B4', '#00CED1', '#9370DB']}
+                tweenDuration={100}
+                friction={0.99}
+              />
             )}
 
             {/* Bio Section */}
