@@ -19,6 +19,7 @@ import { useCallback } from "react";
 import Joyride, { Step } from "react-joyride";
 import dynamic from "next/dynamic";
 import ScoreAnimation from "@/components/ScoreAnimation";
+import LeadershipPointsNotification from "@/components/LeadershipPointsNotification";
 
 const ReactConfetti = dynamic(() => import("react-confetti"), {
   ssr: false,
@@ -46,6 +47,7 @@ export default function ProfilePage() {
   });
   const [showScoreAnimation, setShowScoreAnimation] = useState(false);
   const [currentScore, setCurrentScore] = useState(0);
+  const [showPointsNotification, setShowPointsNotification] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -387,6 +389,10 @@ export default function ProfilePage() {
                                 setShowScoreAnimation(true);
                                 setCurrentScore((prev: number) => prev + 15);
                                 setTimeout(() => setShowScoreAnimation(false), 1500);
+                              } else {
+                                // show +15 points notif for guessing another member's lie correctly
+                                setShowPointsNotification(true);
+                                setTimeout(() => setShowPointsNotification(false), 3000);
                               }
                             }
                           } else {
@@ -480,6 +486,7 @@ export default function ProfilePage() {
           </div>
         </div>
       </main>
+      <LeadershipPointsNotification isVisible={showPointsNotification} points={15} />
     </div>
   );
 }
