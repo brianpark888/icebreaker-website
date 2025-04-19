@@ -17,6 +17,13 @@ import { useEffect, useState } from "react";
 import { set } from "zod";
 import { useCallback } from "react";
 import Joyride, { Step } from "react-joyride";
+import dynamic from "next/dynamic";
+import ScoreAnimation from "@/components/ScoreAnimation";
+import LeadershipPointsNotification from "@/components/LeadershipPointsNotification";
+
+const ReactConfetti = dynamic(() => import("react-confetti"), {
+  ssr: false,
+});
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -33,6 +40,27 @@ export default function ProfilePage() {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [toastType, setToastType] = useState<"success" | "error" | null>(null);
   const [hasSubmitted, setHasSubmitted] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false); // state var for confetti
+  const [windowSize, setWindowSize] = useState({ // state var for window size for confetti dimensions 
+    width: typeof window !== "undefined" ? window.innerWidth : 0,
+    height: typeof window !== "undefined" ? window.innerHeight : 0,
+  });
+  const [showScoreAnimation, setShowScoreAnimation] = useState(false);
+  const [currentScore, setCurrentScore] = useState(0);
+  const [showPointsNotification, setShowPointsNotification] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const fetchMe = async (teamId: string) => {
     const username = localStorage.getItem("username");
     const res = await fetch(`/api/user/${username}?teamId=${teamId}`);
@@ -63,8 +91,8 @@ export default function ProfilePage() {
       if (data.correct !== null) {
         setToastMessage(
           data.correct
-            ? "You’ve already guessed correctly! 🎉"
-            : "You’ve already guessed, and it was incorrect.",
+            ? "You've already guessed correctly! 🎉"
+            : "You've already guessed, and it was incorrect.",
         );
         setToastType(data.correct ? "success" : "error");
       }
@@ -159,6 +187,7 @@ export default function ProfilePage() {
       try {
         const me = await fetchMe(safeTeamId);
         const prof = await fetchProfile(safeProfileId, safeTeamId);
+        setCurrentScore(prof.leadership_score || 0);
         await checkAlreadyAnswered(me.id, prof.id);
       } catch (err) {
         console.error(err);
@@ -318,9 +347,14 @@ export default function ProfilePage() {
                     <p className="text-sm text-muted-foreground">
                       Leadership Score
                     </p>
-                    <p className="text-2xl font-bold">
-                      {user.leadership_score || 0}
-                    </p>
+                    <div className="flex items-center justify-center gap-2">
+                      <div className="text-2xl font-bold">
+                        {currentScore}
+                      </div>
+                      <div className="relative">
+                        <ScoreAnimation isVisible={showScoreAnimation} />
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -357,6 +391,8 @@ export default function ProfilePage() {
                           (s) => s.text === selectedStatement,
                         );
                         const isCorrect = chosen && chosen.isLie;
+                        const isOwnProfile = myData.id === user.id;
+
                         const body = {
                           myId: myData.id,
                           profileId: user.id,
@@ -384,6 +420,23 @@ export default function ProfilePage() {
                             );
                             setToastType(isCorrect ? "success" : "error");
                             setHasSubmitted(true);
+                            
+                            // show confetti only after API confirms success
+                            if (isCorrect) {
+                              setShowConfetti(true);
+                              setTimeout(() => setShowConfetti(false), 5000);
+                              
+                              // if it's their own profile and they guessed correctly, show score animation
+                              if (isOwnProfile) {
+                                setShowScoreAnimation(true);
+                                setCurrentScore((prev: number) => prev + 15);
+                                setTimeout(() => setShowScoreAnimation(false), 1500);
+                              } else {
+                                // show +15 points notif for guessing another member's lie correctly
+                                setShowPointsNotification(true);
+                                setTimeout(() => setShowPointsNotification(false), 3000);
+                              }
+                            }
                           } else {
                             setToastMessage(
                               "Something went wrong submitting your answer.",
@@ -414,6 +467,28 @@ export default function ProfilePage() {
                   </div>
                 )}
               </div>
+            )}
+
+            {/* confetti firework animation */}
+            {showConfetti && (
+              <ReactConfetti
+                width={windowSize.width}
+                height={windowSize.height}
+                recycle={false}
+                numberOfPieces={200}
+                gravity={0.5}
+                initialVelocityY={30}
+                initialVelocityX={15}
+                confettiSource={{
+                  x: windowSize.width / 2,
+                  y: windowSize.height / 2,
+                  w: 0,
+                  h: 0
+                }}
+                colors={['#FFD700', '#FFA500', '#FF69B4', '#00CED1', '#9370DB']}
+                tweenDuration={100}
+                friction={0.99}
+              />
             )}
 
             {/* Bio Section */}
@@ -453,6 +528,7 @@ export default function ProfilePage() {
           </div>
         </div>
       </main>
+      <LeadershipPointsNotification isVisible={showPointsNotification} points={15} />
     </div>
   );
 }
