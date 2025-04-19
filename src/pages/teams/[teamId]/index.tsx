@@ -31,23 +31,42 @@ export default function TeamPage() {
   const [inviteOpen, setInviteOpen] = useState(false);
   const [myData, setMyData] = useState<any>(null);
   const [games, setGames] = useState<any[]>([]);
+  const [steps, setSteps] = useState<Step[]>([]);
 
   const [runTutorial, setRunTutorial] = useState(true);
 
-  const steps: Step[] = [
-    {
-      target: "body",
-      placement: "center",
-      content: "Welcome! Lets get you onboarded!",
-      disableBeacon: true,
-    },
-    {
-      target: ".members-count",
-      content:
-        "To see everyones profiles, you need first unlock them. Find and click on your profile first",
-      locale: { next: "OK" },
-    },
-  ];
+  useEffect(() => {
+    if (!myData) return;
+
+    if (myData?.onboarding_stage === 0) {
+      setSteps([
+        {
+          target: "body",
+          placement: "center",
+          content: "Welcome! Let's get you onboarded!",
+          disableBeacon: true,
+        },
+        {
+          target: ".members-count",
+          content:
+            "To see everyone's profiles, you need to unlock them. Find and click on your profile first.",
+          locale: { next: "OK" },
+        },
+      ]);
+    } else if (myData?.onboarding_stage === 1) {
+      setSteps([
+        {
+          target: ".members-count",
+          content:
+            "Great! Now you can see your job title. Now do the same for the rest of your teammates and learn more about them! Have fun!",
+          locale: { next: "OK" },
+        },
+      ]);
+    } else {
+      // optional: don't run Joyride at all
+      setRunTutorial(false);
+    }
+  }, [myData]);
 
   useEffect(() => {
     const fetchTeamData = async () => {
@@ -79,9 +98,6 @@ export default function TeamPage() {
         const res = await fetch(`/api/user/${username}?teamId=${teamId}`);
         const data = await res.json();
         if (res.ok) {
-          if (data.user.has_finished_onboarding) {
-            setRunTutorial(false);
-          }
           setMyData(data.user);
         } else {
           console.error("Failed to load profile", data.detail);

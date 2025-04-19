@@ -80,6 +80,14 @@ export default async function handler(
       if (scoreError) {
         return res.status(500).json({ error: scoreError.message });
       }
+      const { error: onboardingError } = await supabase
+        .from("team_members")
+        .update({ onboarding_stage: 1 })
+        .eq("id", userIdToUpdate);
+
+      if (onboardingError) {
+        return res.status(500).json({ error: onboardingError.message });
+      }
     }
 
     return res

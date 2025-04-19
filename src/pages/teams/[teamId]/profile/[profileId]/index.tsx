@@ -41,7 +41,8 @@ export default function ProfilePage() {
   const [toastType, setToastType] = useState<"success" | "error" | null>(null);
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false); // state var for confetti
-  const [windowSize, setWindowSize] = useState({ // state var for window size for confetti dimensions 
+  const [windowSize, setWindowSize] = useState({
+    // state var for window size for confetti dimensions
     width: typeof window !== "undefined" ? window.innerWidth : 0,
     height: typeof window !== "undefined" ? window.innerHeight : 0,
   });
@@ -102,7 +103,16 @@ export default function ProfilePage() {
   // Tutorial part 2
 
   const [stepIndex, setStepIndex] = useState(0);
-  const [runTutorial, setRunTutorial] = useState(true);
+  const [runTutorial, setRunTutorial] = useState(false);
+
+  useEffect(() => {
+    if (
+      (myData && myData?.onboarding_stage === 1) ||
+      myData?.onboarding_stage === 0
+    ) {
+      setRunTutorial(true);
+    }
+  }, [myData]);
 
   const steps: Step[] = [
     {
@@ -162,7 +172,6 @@ export default function ProfilePage() {
       }
     }, 300);
   };
-  
 
   /* ---------- master effect: run them in order ---------- */
   useEffect(() => {
@@ -348,9 +357,7 @@ export default function ProfilePage() {
                       Leadership Score
                     </p>
                     <div className="flex items-center justify-center gap-2">
-                      <div className="text-2xl font-bold">
-                        {currentScore}
-                      </div>
+                      <div className="text-2xl font-bold">{currentScore}</div>
                       <div className="relative">
                         <ScoreAnimation isVisible={showScoreAnimation} />
                       </div>
@@ -420,21 +427,27 @@ export default function ProfilePage() {
                             );
                             setToastType(isCorrect ? "success" : "error");
                             setHasSubmitted(true);
-                            
+
                             // show confetti only after API confirms success
                             if (isCorrect) {
                               setShowConfetti(true);
                               setTimeout(() => setShowConfetti(false), 5000);
-                              
+
                               // if it's their own profile and they guessed correctly, show score animation
                               if (isOwnProfile) {
                                 setShowScoreAnimation(true);
                                 setCurrentScore((prev: number) => prev + 15);
-                                setTimeout(() => setShowScoreAnimation(false), 1500);
+                                setTimeout(
+                                  () => setShowScoreAnimation(false),
+                                  1500,
+                                );
                               } else {
                                 // show +15 points notif for guessing another member's lie correctly
                                 setShowPointsNotification(true);
-                                setTimeout(() => setShowPointsNotification(false), 3000);
+                                setTimeout(
+                                  () => setShowPointsNotification(false),
+                                  3000,
+                                );
                               }
                             }
                           } else {
@@ -483,9 +496,9 @@ export default function ProfilePage() {
                   x: windowSize.width / 2,
                   y: windowSize.height / 2,
                   w: 0,
-                  h: 0
+                  h: 0,
                 }}
-                colors={['#FFD700', '#FFA500', '#FF69B4', '#00CED1', '#9370DB']}
+                colors={["#FFD700", "#FFA500", "#FF69B4", "#00CED1", "#9370DB"]}
                 tweenDuration={100}
                 friction={0.99}
               />
@@ -528,7 +541,10 @@ export default function ProfilePage() {
           </div>
         </div>
       </main>
-      <LeadershipPointsNotification isVisible={showPointsNotification} points={15} />
+      <LeadershipPointsNotification
+        isVisible={showPointsNotification}
+        points={15}
+      />
     </div>
   );
 }
