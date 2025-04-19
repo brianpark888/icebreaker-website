@@ -123,7 +123,7 @@ export default function ProfilePage() {
       disableBeacon: true,
     },
     {
-      target: ".correct",
+      target: ".bio-answer",
       content:
         "Nice guess! Now you can see your bio and response to the prompts",
       locale: { next: "OK" },
@@ -506,7 +506,7 @@ export default function ProfilePage() {
 
             {/* Bio Section */}
             {hasSubmitted && (
-              <div className="rounded-2xl border border-muted/20 bg-gradient-to-b from-muted/50 to-muted/30 p-6 backdrop-blur-sm">
+              <div className="rounded-2xl border border-muted/20 bg-gradient-to-b from-muted/50 to-muted/30 p-6 backdrop-blur-sm bio-answer">
                 <h2 className="mb-4 text-xl font-semibold">Bio</h2>
                 <div className="rounded-xl bg-muted/30 p-5">
                   <p className="text-muted-foreground">{user.bio}</p>
