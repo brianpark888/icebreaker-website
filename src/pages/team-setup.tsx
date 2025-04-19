@@ -95,7 +95,7 @@ export default function TeamSetup() {
       <h1 className="text-4xl font-bold">Team Setup</h1>
       <div className="grid w-full max-w-3xl gap-8 md:grid-cols-2">
         {/* Create Team Card */}
-        <div className="rounded-2xl border border-muted/20 bg-muted/10 p-6 shadow-lg backdrop-blur-md">
+        <div className="rounded-2xl border bg-muted/10 p-6 shadow-lg backdrop-blur-md">
           <h2 className="flex items-center gap-2 text-xl font-semibold">
             <Plus className="h-5 w-5" /> Create a Team
           </h2>
