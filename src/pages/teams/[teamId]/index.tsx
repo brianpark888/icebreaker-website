@@ -35,6 +35,10 @@ export default function TeamPage() {
 
   const [runTutorial, setRunTutorial] = useState(true);
 
+  const handleTutorialComplete = async () => {
+    //do something
+  };
+
   useEffect(() => {
     if (!myData) return;
 
@@ -178,6 +182,12 @@ export default function TeamPage() {
         showSkipButton
         continuous
         scrollToFirstStep
+        callback={(data) => {
+          if (data.status === "finished" || data.status === "skipped") {
+            handleTutorialComplete();
+            setRunTutorial(false); // Optional: prevent future runs
+          }
+        }}
         styles={{
           options: {
             //primaryColor: "#6366f1", // customize to match your theme
