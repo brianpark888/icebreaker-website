@@ -1,15 +1,25 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { supabase } from "@/lib/supabase";
 import { v4 as uuidv4 } from "uuid";
+import { on } from "events";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
   if (req.method !== "POST") return res.status(405).end("Method Not Allowed");
 
   const { team_name, description, test, test_user } = req.body;
   const user = test && test_user ? test_user : null;
 
-  if (!user || typeof user.id !== "number" || typeof user.username !== "string") {
-    return res.status(400).json({ detail: "User information is required and must be valid" });
+  if (
+    !user ||
+    typeof user.id !== "number" ||
+    typeof user.username !== "string"
+  ) {
+    return res
+      .status(400)
+      .json({ detail: "User information is required and must be valid" });
   }
 
   try {
@@ -37,14 +47,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Add user to team_members as "admin"
     const { error: insertMemberError } = await supabase
       .from("team_members")
-      .insert([{
-        id: uuidv4(),
-        team_id: teamId,
-        user_id: user.id,
-        username: user.username,
-        joined_at: new Date().toISOString(),
-        role: "admin"
-      }]);
+      .insert([
+        {
+          id: uuidv4(),
+          team_id: teamId,
+          user_id: user.id,
+          username: user.username,
+          joined_at: new Date().toISOString(),
+          onboarding_stage: 2,
+        },
+      ]);
 
     if (insertMemberError) throw insertMemberError;
 

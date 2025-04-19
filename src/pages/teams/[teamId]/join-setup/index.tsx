@@ -186,7 +186,13 @@ export default function ProfileSetup() {
               </div>
 
               {/* Submit */}
-              <div className="pt-4">
+              <div className="flex flex-col justify-center gap-2 pt-2">
+                <a
+                  href={`/teams/${teamId}`}
+                  className="text-center text-sm text-foreground/50 underline hover:text-foreground"
+                >
+                  Skip
+                </a>
                 <button
                   type="submit"
                   className="w-full rounded-md bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary/90"

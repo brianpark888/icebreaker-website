@@ -21,7 +21,6 @@ export default function TeamSetup() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         team_name: teamName,
-        description: "My awesome team",
         test: true,
         test_user: {
           id: Number(user_id),
@@ -33,7 +32,7 @@ export default function TeamSetup() {
     const data = await res.json();
 
     if (res.ok) {
-      window.location.href = `/teams/${data.team.id}`;
+      window.location.href = `/teams/${data.team.id}/join-setup`;
     } else {
       alert(data.detail || "Failed to create team");
     }
