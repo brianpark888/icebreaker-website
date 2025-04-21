@@ -293,7 +293,7 @@ export default function ProfilePage() {
                 onClick={() => router.push(`/teams/${teamId}`)}
                 className="flex items-center justify-center rounded-lg p-1 transition-colors duration-200 ease-in-out hover:bg-muted/20"
               >
-                <ArrowLeft className="h-4 w-4 back-button" />
+                <ArrowLeft className="back-button h-4 w-4" />
               </button>
               <h1 className="text-gradient text-3xl font-bold">
                 {user.username}'s Profile
@@ -315,9 +315,6 @@ export default function ProfilePage() {
                 />
                 <div className="flex-1 space-y-2 text-center md:text-left">
                   <h2 className="text-2xl font-bold">{user.username}</h2>
-                  <p className="text-muted-foreground">
-                    {user.role || "Team Member"}
-                  </p>
                   <div className="flex flex-wrap justify-center gap-3 md:justify-start">
                     {user.email && (
                       <div className="flex items-center gap-1 text-sm text-muted-foreground">
@@ -506,7 +503,7 @@ export default function ProfilePage() {
 
             {/* Bio Section */}
             {hasSubmitted && (
-              <div className="rounded-2xl border border-muted/20 bg-gradient-to-b from-muted/50 to-muted/30 p-6 backdrop-blur-sm bio-answer">
+              <div className="bio-answer rounded-2xl border border-muted/20 bg-gradient-to-b from-muted/50 to-muted/30 p-6 backdrop-blur-sm">
                 <h2 className="mb-4 text-xl font-semibold">Bio</h2>
                 <div className="rounded-xl bg-muted/30 p-5">
                   <p className="text-muted-foreground">{user.bio}</p>
